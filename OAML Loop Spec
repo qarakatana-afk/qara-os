@@ -1,0 +1,304 @@
+
+# qara-os OAML Loop Spec
+**Observe → Act → Measure → Learn**  
+Version: 0.1  
+Owner: `@qara-os-operator`  
+Cadence: Weekly
+
+---
+
+## 1) Purpose
+
+This document defines the closed-loop learning workflow for qara-os so system decisions improve over time with evidence.
+
+Loop:
+
+1. Observe
+2. Act
+3. Measure
+4. Learn
+5. Update knowledge
+6. Improve decisions
+7. Observe again
+
+---
+
+## 2) Scope (start small)
+
+Initial scope: **one decision loop only**.
+
+Recommended first loop:
+- **Decision**: Task prioritization recommendation
+- **Actor**: qara-os decision engine
+- **User**: operator / developer
+- **Trigger**: new task event or queue update
+
+Do not add additional loops until this one is stable for 2 consecutive review cycles.
+
+---
+
+## 3) Core artifacts (must exist every cycle)
+
+For each decision event, capture:
+
+1. **Observation record** — context at decision time
+2. **Decision record** — action chosen and rationale
+3. **Outcome record** — what happened after action
+4. **Learning note** — pattern discovered
+5. **Knowledge update** — rule/spec/docs updated
+6. **Decision change** — behavior adjusted in engine/policy
+
+If any artifact is missing, the cycle is incomplete.
+
+---
+
+## 4) Event schema (minimum)
+
+Use JSON lines (`.jsonl`) for append-only logging.
+
+### 4.1 Observe event
+```json
+{
+  "event_id": "uuid",
+  "timestamp": "2026-07-17T12:00:00Z",
+  "loop_id": "task-priority-v1",
+  "type": "observe",
+  "entity_id": "task_123",
+  "context": {
+    "source": "github_issue",
+    "severity": "high",
+    "age_hours": 18,
+    "dependencies_blocked": 2,
+    "user_segment": "core-dev"
+  }
+}
+```
+
+### 4.2 Act event
+```json
+{
+  "event_id": "uuid",
+  "timestamp": "2026-07-17T12:00:01Z",
+  "loop_id": "task-priority-v1",
+  "type": "act",
+  "entity_id": "task_123",
+  "decision": {
+    "action": "prioritize_p1",
+    "score": 0.84,
+    "policy_version": "policy-2026-07-17.1",
+    "reason_codes": ["severity_high", "blocked_dependencies", "sla_risk"]
+  }
+}
+```
+
+### 4.3 Measure event
+```json
+{
+  "event_id": "uuid",
+  "timestamp": "2026-07-17T18:00:00Z",
+  "loop_id": "task-priority-v1",
+  "type": "measure",
+  "entity_id": "task_123",
+  "outcome": {
+    "resolved_within_sla": true,
+    "time_to_first_action_minutes": 9,
+    "operator_override": false,
+    "reopened": false,
+    "downstream_incidents": 0
+  }
+}
+```
+
+### 4.4 Learn event
+```json
+{
+  "event_id": "uuid",
+  "timestamp": "2026-07-18T10:00:00Z",
+  "loop_id": "task-priority-v1",
+  "type": "learn",
+  "insight": {
+    "pattern": "Tasks with blocked_dependencies >= 2 are under-ranked when severity is medium",
+    "confidence": 0.76,
+    "sample_size": 42
+  },
+  "recommended_change": {
+    "target": "policy_weight.blocked_dependencies",
+    "from": 0.15,
+    "to": 0.24
+  }
+}
+```
+
+### 4.5 Knowledge update event
+```json
+{
+  "event_id": "uuid",
+  "timestamp": "2026-07-18T10:10:00Z",
+  "loop_id": "task-priority-v1",
+  "type": "knowledge_update",
+  "change": {
+    "kb_doc": "docs/policies/task-priority.md",
+    "kb_version": "kb-2026-07-18.1",
+    "summary": "Increased dependency-block weight; added medium-severity exception rule."
+  }
+}
+```
+
+### 4.6 Improve decision event
+```json
+{
+  "event_id": "uuid",
+  "timestamp": "2026-07-18T10:20:00Z",
+  "loop_id": "task-priority-v1",
+  "type": "decision_improvement",
+  "deployment": {
+    "policy_version": "policy-2026-07-18.1",
+    "change_type": "weight_update",
+    "rollback_plan": "restore policy-2026-07-17.1"
+  }
+}
+```
+
+---
+
+## 5) KPI set (v1)
+
+Track these weekly:
+
+1. **Decision quality**
+   - `% resolved_within_sla`
+   - `% reopened` (lower is better)
+2. **Execution efficiency**
+   - median `time_to_first_action_minutes`
+3. **Trust / adoption**
+   - `% operator_override` (watch both very high and near-zero)
+4. **Stability**
+   - incident rate after decision changes
+5. **Learning velocity**
+   - number of validated insights shipped per week
+
+Guardrails:
+- Never degrade SLA metric by >3% week-over-week.
+- If incident rate rises >1.5x baseline, auto-trigger rollback review.
+
+---
+
+## 6) Data contracts & storage
+
+- Log format: `JSONL`, append-only
+- Retention:
+  - hot: 30 days
+  - warm: 180 days
+  - cold archive: 1 year
+- Required IDs:
+  - `event_id` (uuid)
+  - `entity_id` (task/issue/item id)
+  - `loop_id`
+  - `policy_version`
+- Correlation:
+  - all events for a decision must share `entity_id` + `loop_id`
+
+Recommended paths:
+- `data/oaml/events-YYYY-MM.jsonl`
+- `data/oaml/weekly-summaries/YYYY-WW.md`
+- `docs/policies/task-priority.md`
+- `docs/changelog/decision-policy.md`
+
+---
+
+## 7) Weekly operating ritual (30 min)
+
+Agenda:
+
+1. **Observe recap (5 min)**  
+   Volume, anomalies, missing telemetry.
+
+2. **Measure review (10 min)**  
+   KPI deltas vs prior week and baseline.
+
+3. **Learn extraction (10 min)**  
+   Identify 1–3 high-confidence patterns.
+
+4. **Update + Improve decisions (5 min)**  
+   Approve exactly one policy change unless urgent.
+
+Outputs required:
+- Weekly summary note
+- Policy/kb version bump
+- Rollout decision (ship / hold / rollback)
+
+---
+
+## 8) Change management
+
+Every decision-policy change must include:
+
+- Hypothesis
+- Expected KPI impact
+- Risk assessment
+- Rollback condition
+- Owner
+- Effective date/time
+
+Template:
+```md
+Change ID: DEC-2026-07-18-01
+Hypothesis: Increasing blocked dependency weight improves SLA hit-rate for medium severity items.
+Expected impact: +2–4% resolved_within_sla
+Risk: Over-prioritization of dependency-heavy tasks
+Rollback if: reopened rate > baseline + 2%
+Owner: @qara-os-operator
+```
+
+---
+
+## 9) Anti-patterns (do not do)
+
+- Shipping policy changes without outcome data
+- Running multiple simultaneous major policy changes (no attribution)
+- Keeping knowledge updates in chat only (must be in versioned docs)
+- Ignoring overrides (overrides are gold feedback)
+- Expanding scope before first loop is stable
+
+---
+
+## 10) 7-day bootstrap checklist
+
+- [ ] Pick first loop (`task-priority-v1`)
+- [ ] Define KPI baseline from last 7 days
+- [ ] Implement Observe/Act/Measure logging
+- [ ] Run first end-to-end cycle
+- [ ] Produce first weekly summary
+- [ ] Ship one policy update
+- [ ] Compare post-change metrics vs baseline
+
+---
+
+## 11) Definition of Done (per cycle)
+
+A cycle is complete only when all are true:
+
+- [ ] Observe, Act, Measure events logged for sampled decisions
+- [ ] At least one validated learning note created
+- [ ] Knowledge base updated with version bump
+- [ ] One decision improvement deployed (or explicit no-change decision documented)
+- [ ] KPI comparison published
+- [ ] Rollback readiness confirmed
+
+---
+
+## 12) Next iteration (after 2 stable weeks)
+
+Add one additional loop:
+
+- Alert routing, or
+- Auto-remediation suggestion ranking, or
+- Developer assistance recommendation quality
+
+Keep each loop with separate `loop_id`, KPIs, and policy versions.
+
+````
+
+If you want, next I can generate:
+1) `docs/oaml-weekly-template.md` (meeting template), and  
+2) `data/oaml/event-schema.json` (JSON Schema for validation).
