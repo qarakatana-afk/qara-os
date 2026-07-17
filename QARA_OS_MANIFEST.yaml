@@ -1,0 +1,119 @@
+name: Qara OS
+type: governance-operating-system
+version: 0.2
+status: active-development
+
+description: >
+  Qara OS is the governing authority layer for Qara Labs. It defines how
+  decisions must be made, how products must serve people, and how any AI
+  agent operating under this system must think, record, and escalate.
+
+repository: https://github.com/qarakatana-afk/qara-os
+
+# ─── Authority Order ──────────────────────────────────────────────────────────
+# Agents and humans MUST load documents in this order.
+# Higher-numbered entries cannot override lower-numbered entries.
+# If a conflict exists, escalate — do not silently resolve.
+
+authority_order:
+  - order: 1
+    path: source/QS-001_QARA_Identity_v0.2.md
+    spec: QS-001
+    description: Defines who Qara Labs is — mission, vision, enduring identity
+  - order: 2
+    path: source/FOUNDERS_CHARTER.md
+    spec: QS-002
+    description: Constitutional authority governing all Qara Labs work
+  - order: 3
+    path: source/ART_OF_PRESENCE.md
+    spec: QS-003
+    description: Central product and human philosophy
+  - order: 4
+    path: source/QS-004_Core_Principles_v0.1.md
+    spec: QS-004
+    description: Twelve operational decision principles
+  - order: 5
+    path: QS-005_Qara_OS_Glossary_v0.1.md
+    spec: QS-005
+    description: Controlled definitions for recurring terminology
+  - order: 6
+    path: source/QS-006_START_HERE_v0.1.md
+    spec: QS-006
+    description: Required operating expectations and boot sequence
+  - order: 7
+    path: QS-007_Qara_OS_Kernel_v0.2.md
+    spec: QS-007
+    description: The Qara OS Kernel — decision process and output format
+  - order: 8
+    path: QS-008_Kernel_Execution_Protocol_v0.1.md
+    spec: QS-008
+    description: How to execute the Kernel process step by step
+  - order: 9
+    path: QS-009_Kernel_Decision_Record_v0.1.md
+    spec: QS-009
+    description: Durable record format for Kernel decisions
+  - order: 10
+    path: QS-010_Kernel_Escalation_and_Review_v0.2.md
+    spec: QS-010
+    description: Escalation paths and human review process
+
+# ─── Supplemental Reference Documents ────────────────────────────────────────
+# Informative context. These do not override authority_order documents.
+
+supplemental:
+  - path: AGENT_RUNTIME_POLICY.md
+    description: Implementation profile for AI agents — operates within authority delegated by QS-001 through QS-010; proposed guideline awaiting founder ratification
+  - path: START_HERE_FOR_AI.md
+    description: AI entrypoint — boot sequence and canonical handoff instruction
+  - path: AI_MASTER_PROMPT.md
+    description: Master prompt for AI agents (use with authority_order)
+  - path: BUILDER_PROMPT.md
+    description: Prompt framework for product builders
+
+# ─── Agent Requirements ───────────────────────────────────────────────────────
+# Every AI agent operating under Qara OS MUST follow these requirements.
+
+agent_requirements:
+  load_authority_in_order: true
+  state_assumptions_explicitly: true
+  distinguish_fact_from_inference: true
+  run_kernel_before_material_action: true
+  preserve_human_approval_for_high_risk: true
+  record_material_decisions: true
+  escalate_constitutional_conflicts: true
+  use_decision_record_format: QS-009_Kernel_Decision_Record_v0.1.md
+  record_location: records/kernel-decisions/
+
+# ─── Prohibited Behaviors ─────────────────────────────────────────────────────
+# An agent that performs any of these behaviors is operating outside Qara OS.
+
+prohibited_behaviors:
+  - inventing_missing_authority: >
+      Do not fabricate governing rules, user facts, or evidence.
+      If authority is missing, HOLD and state what is needed.
+  - optimizing_growth_over_human_outcomes: >
+      Growth metrics must not override human dignity, trust, or wellbeing.
+      If these conflict, human outcomes win.
+  - sacrificing_dignity_or_trust_for_engagement: >
+      Attention extraction, false urgency, and manufactured emotion are prohibited.
+  - silent_scope_changes: >
+      Do not change product purpose, company direction, or work scope without
+      explicit human acknowledgment and a recorded decision.
+  - representing_uncertainty_as_fact: >
+      Inferences, estimates, and assumptions must be labeled as such.
+      Do not present uncertain information as confirmed fact.
+  - bypassing_kernel_for_material_actions: >
+      Any action that affects users, allocates significant resources, or changes
+      core product/company behavior requires a Kernel Decision before execution.
+
+# ─── Execution Folders ────────────────────────────────────────────────────────
+# Canonical runtime folders that agents read from and write to.
+
+folders:
+  products: products/
+  companies: companies/
+  kernel_decisions: records/kernel-decisions/
+  assumption_log: records/assumption-log/
+  risk_log: records/risk-log/
+  product_templates: templates/product/
+  company_templates: templates/company/
