@@ -17,43 +17,43 @@ repository: https://github.com/qarakatana-afk/qara-os
 
 authority_order:
   - order: 1
-    path: docs/philosophy/01-QARA_Identity.md
+    path: source/QS-001_QARA_Identity_v0.2.md
     spec: QS-001
     description: Defines who Qara Labs is — mission, vision, enduring identity
   - order: 2
-    path: docs/philosophy/02-Founders_Charter.md
+    path: source/FOUNDERS_CHARTER.md
     spec: QS-002
     description: Constitutional authority governing all Qara Labs work
   - order: 3
-    path: docs/philosophy/03-Art_of_Presence.md
+    path: source/ART_OF_PRESENCE.md
     spec: QS-003
     description: Central product and human philosophy
   - order: 4
-    path: docs/philosophy/04-Core_Principles.md
+    path: source/QS-004_Core_Principles_v0.1.md
     spec: QS-004
     description: Twelve operational decision principles
   - order: 5
-    path: docs/philosophy/05-Glossary.md
+    path: QS-005_Qara_OS_Glossary_v0.1.md
     spec: QS-005
     description: Controlled definitions for recurring terminology
   - order: 6
-    path: docs/philosophy/06-Start_Here_Specification.md
+    path: source/QS-006_START_HERE_v0.1.md
     spec: QS-006
     description: Required operating expectations and boot sequence
   - order: 7
-    path: docs/kernel/07-Kernel.md
+    path: QS-007_Qara_OS_Kernel_v0.2.md
     spec: QS-007
     description: The Qara OS Kernel — decision process and output format
   - order: 8
-    path: docs/kernel/08-Kernel_Execution_Protocol.md
+    path: QS-008_Kernel_Execution_Protocol_v0.1.md
     spec: QS-008
     description: How to execute the Kernel process step by step
   - order: 9
-    path: docs/kernel/09-Kernel_Decision_Record.md
+    path: QS-009_Kernel_Decision_Record_v0.1.md
     spec: QS-009
     description: Durable record format for Kernel decisions
   - order: 10
-    path: docs/kernel/10-Kernel_Escalation_and_Review.md
+    path: QS-010_Kernel_Escalation_and_Review_v0.2.md
     spec: QS-010
     description: Escalation paths and human review process
 
@@ -62,7 +62,7 @@ authority_order:
 
 supplemental:
   - path: AGENT_RUNTIME_POLICY.md
-    description: Binding runtime policy for AI agents operating under Qara OS
+    description: Implementation profile for AI agents — operates within authority delegated by QS-001 through QS-010; proposed guideline awaiting founder ratification
   - path: START_HERE_FOR_AI.md
     description: AI entrypoint — boot sequence and canonical handoff instruction
   - path: AI_MASTER_PROMPT.md
@@ -81,7 +81,7 @@ agent_requirements:
   preserve_human_approval_for_high_risk: true
   record_material_decisions: true
   escalate_constitutional_conflicts: true
-  use_decision_record_format: docs/kernel/09-Kernel_Decision_Record.md
+  use_decision_record_format: QS-009_Kernel_Decision_Record_v0.1.md
   record_location: records/kernel-decisions/
 
 # ─── Prohibited Behaviors ─────────────────────────────────────────────────────

@@ -1,7 +1,8 @@
 # Agent Runtime Policy
 
 **Authority:** Qara OS — QS-001 through QS-010 (see `QARA_OS_MANIFEST.yaml` for the full authority order and document paths)  
-**Status:** Active  
+**Classification:** Implementation Profile — this document proposes operating guidelines for AI agents working within the authority already delegated by QS-001 through QS-010. It does not create new constitutional obligations independent of those specifications. It is a proposed policy awaiting founder ratification and should be read as supplemental guidance, not as a ratified numbered specification.  
+**Status:** Proposed — awaiting founder ratification  
 **Applies to:** All AI agents operating under Qara OS governance
 
 ---
