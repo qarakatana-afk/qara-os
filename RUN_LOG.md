@@ -11,7 +11,7 @@ This log tracks every execution used for v0.1 validation.
 
 | Run ID | Scenario ID | Date (UTC) | Executor | Input Version | Authority Set Version | Final Decision | Escalation (Y/N) | Decision Record | Trace Log | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
-| RUN-001 | SCN-001 |  |  |  |  |  |  |  |  |  |
+| RUN-001 | SCN-001 | 2026-07-19 | qarakatana-afk | markdown | QARA OS Authority Set v0.1 (2026-07-19) | APPROVED | N | DECISION_RECORDS/DR-SCN-001-RUN-001.md | TRACE_LOGS/SCN-001/TRACE-SCN-001-RUN-001.md | MVP accepted as v0.1 baseline; future changes require documented scope/governing-doc revision. |
 | RUN-002 | SCN-001 |  |  |  |  |  |  |  |  |  |
 | RUN-003 | SCN-001 |  |  |  |  |  |  |  |  |  |
 | RUN-004 | SCN-001 |  |  |  |  |  |  |  |  |  |
@@ -19,7 +19,7 @@ This log tracks every execution used for v0.1 validation.
 
 ## Status Summary (optional)
 
-- Total runs completed:
-- Total scenarios covered:
-- Runs with escalation:
-- Runs pending documentation:
+- Total runs completed: 1
+- Total scenarios covered: 1
+- Runs with escalation: 0
+- Runs pending documentation: 0
