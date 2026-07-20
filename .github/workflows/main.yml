@@ -29,9 +29,14 @@ jobs:
           EXPECTED='@Copilot Accepted Confirmation: Are you sure?'
           RECEIVED='${{ github.event.inputs.confirmation }}'
           NORMALIZED="$RECEIVED"
-          if [[ "$NORMALIZED" == confirmation:* ]]; then
+          if [[ "$NORMALIZED" == confirmation:*" operation:"* ]]; then
             NORMALIZED="${NORMALIZED#confirmation: }"
             NORMALIZED="${NORMALIZED%% operation:*}"
+          fi
+          if [ -z "$NORMALIZED" ]; then
+            echo "Invalid confirmation phrase."
+            echo "Received: $RECEIVED"
+            exit 1
           fi
           if [ "$NORMALIZED" != "$EXPECTED" ]; then
             echo "Invalid confirmation phrase."
