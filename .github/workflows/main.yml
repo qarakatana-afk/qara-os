@@ -1,0 +1,42 @@
+name: Manual Write Gateway
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type EXACTLY: @Copilot Accepted Confirmation: Are you sure?"
+        required: true
+        type: string
+      operation:
+        description: "Short description of intended write operation"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: read
+
+jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate confirmation phrase
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED='@Copilot Accepted Confirmation: Are you sure?'
+          if [ "${{ github.event.inputs.confirmation }}" != "$EXPECTED" ]; then
+            echo "Invalid confirmation phrase."
+            echo "Expected: $EXPECTED"
+            echo "Received: ${{ github.event.inputs.confirmation }}"
+            exit 1
+          fi
+
+      - name: Log authorized operation
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Operation: ${{ github.event.inputs.operation }}"
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
