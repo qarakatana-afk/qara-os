@@ -30,8 +30,10 @@ jobs:
           RECEIVED='${{ github.event.inputs.confirmation }}'
           NORMALIZED="$RECEIVED"
           if [[ "$NORMALIZED" == confirmation:*" operation:"* ]]; then
-            NORMALIZED="${NORMALIZED#confirmation: }"
+            NORMALIZED="${NORMALIZED#confirmation:}"
+            NORMALIZED="${NORMALIZED#"${NORMALIZED%%[![:space:]]*}"}"
             NORMALIZED="${NORMALIZED%% operation:*}"
+            NORMALIZED="${NORMALIZED%"${NORMALIZED##*[![:space:]]}"}"
           fi
           if [ -z "$NORMALIZED" ]; then
             echo "Invalid confirmation phrase."
