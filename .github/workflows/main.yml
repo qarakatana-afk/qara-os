@@ -27,10 +27,24 @@ jobs:
         run: |
           set -euo pipefail
           EXPECTED='@Copilot Accepted Confirmation: Are you sure?'
-          if [ "${{ github.event.inputs.confirmation }}" != "$EXPECTED" ]; then
+          RECEIVED='${{ github.event.inputs.confirmation }}'
+          NORMALIZED="$RECEIVED"
+          if [[ "$NORMALIZED" == confirmation:*" operation:"* ]]; then
+            NORMALIZED="${NORMALIZED#confirmation:}"
+            NORMALIZED="${NORMALIZED#"${NORMALIZED%%[![:space:]]*}"}"
+            NORMALIZED="${NORMALIZED%% operation:*}"
+            NORMALIZED="${NORMALIZED%"${NORMALIZED##*[![:space:]]}"}"
+          fi
+          if [ -z "$NORMALIZED" ]; then
+            echo "Invalid confirmation phrase."
+            echo "Received: $RECEIVED"
+            exit 1
+          fi
+          if [ "$NORMALIZED" != "$EXPECTED" ]; then
             echo "Invalid confirmation phrase."
             echo "Expected: $EXPECTED"
-            echo "Received: ${{ github.event.inputs.confirmation }}"
+            echo "Received: $RECEIVED"
+            echo "Normalized: $NORMALIZED"
             exit 1
           fi
 
