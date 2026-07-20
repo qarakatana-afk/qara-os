@@ -9,6 +9,7 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
   - Final decision consistency
   - Escalation behavior consistency
   - Authority set consistency
+  - Canonical fixed-input identity and decision-question consistency
   - Kernel stage coverage (1–8)
   - Confidence range
 - Interpretation:
@@ -21,7 +22,7 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 
 | Scenario ID | Runs | Expected Behavior | Observed Behavior | Equivalence Result | Notes |
 |---|---:|---|---|---|---|
-| SCN-001 | 3 (RUN-001, RUN-002, RUN-003) | Approve in-scope baseline artifacts and operating model with no escalation | All three runs APPROVED, no escalation, complete records | EQUIVALENT | Demonstrates stable approval logic across baseline-definition and operating-model checks |
+| SCN-001 | 3 recorded (RUN-001, RUN-002, RUN-003); 0 valid repeatability runs | Reach equivalent results across five identical executions of one straightforward recommendation | Recorded runs use different decision questions and objectives (MVP definition, roadmap validation, repository operating model) under the same authority-set version | HOLD — invalid comparison set | Canonical fixed input package is not explicit in `SCENARIOS/SCN-001.md`; RUN-006 and RUN-007 were not executed |
 | SCN-002 | 1 (RUN-004) | Approve when acceptance criteria are fully satisfied | APPROVED, no escalation, criteria-driven rationale present | EQUIVALENT (provisional) | Single-run provisional status; add ≥1 confirming run for stronger repeatability evidence |
 | SCN-003 | 1 (RUN-005) | Escalate when proposal conflicts with approved MVP scope | ESCALATED, governance-review path explicitly required | EQUIVALENT (provisional) | Correct conflict detection observed; add ≥1 confirming run for stronger repeatability evidence |
 
@@ -39,6 +40,21 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 
 ---
 
+## SCN-001 Comparability Gate Review
+
+| Run ID | Recorded objective | Comparable to a single fixed SCN-001 packet? | Evidence |
+|---|---|---|---|
+| RUN-001 | Validate the MVP definition as the v0.1 baseline | No | `DECISION_RECORDS/DR-SCN-001-RUN-001.md` |
+| RUN-002 | Validate the v0.1 roadmap against the approved MVP | No | `DECISION_RECORDS/DR-SCN-001-RUN-002.md` |
+| RUN-003 | Validate the repository operating model for v0.1 governance and execution flow | No | `DECISION_RECORDS/DR-SCN-001-RUN-003.md` |
+
+- `SCENARIOS/SCN-001.md` defines only a generic scenario class and does not preserve a canonical document packet or one explicit decision question.
+- The three recorded SCN-001 runs share the same recorded authority-set version and input version, but they do not share materially identical execution objectives.
+- Under `TEST_PLAN_v0.1.md`, these records do **not** satisfy the "five identical runs" requirement for repeatability evidence.
+- Related HOLD record: `records/kernel-decisions/2026-07-20_scn-001-repeatability-comparability-gate.md`
+
+---
+
 ## Consistency Findings
 
 ### 1) Authority Consistency
@@ -48,10 +64,11 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 **Assessment:** Pass.
 
 ### 2) Decision Logic Consistency
-- In-scope validation scenarios (SCN-001, SCN-002) resulted in **APPROVED**.
+- In-scope validation scenarios (SCN-002) resulted in **APPROVED**.
 - Out-of-scope conflict scenario (SCN-003) resulted in **ESCALATED**.
+- SCN-001 cannot currently be assessed for repeatability because the recorded runs do not use one identical input package.
 
-**Assessment:** Pass.
+**Assessment:** Partial — SCN-001 repeatability is on HOLD pending a valid fixed-input baseline.
 
 ### 3) Escalation Logic Consistency
 - Escalation only occurred in the explicit authority-conflict scenario.
@@ -66,7 +83,7 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
   - Trace log
   - Stage sequence coverage 1–8
 
-**Assessment:** Pass.
+**Assessment:** Pass for record completeness; not sufficient to establish SCN-001 identical-input repeatability.
 
 ### 5) Confidence Profile
 - Reported confidence values (where provided): 0.97, 0.98, 0.98, 0.99.
@@ -78,15 +95,19 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 
 ## Gaps / Risks
 
-1. **Scenario repeatability depth**
+1. **SCN-001 invalid comparison set**
+   - RUN-001 through RUN-003 use different decision questions and objectives.
+   - Risk: current SCN-001 repeatability claim is not supportable under the approved identical-input standard.
+
+2. **Scenario repeatability depth**
    - SCN-002 and SCN-003 each have one run only.
    - Risk: insufficient repeatability evidence for those classes.
 
-2. **Confidence field normalization**
+3. **Confidence field normalization**
    - RUN-001 lacks an explicit numeric confidence value.
    - Risk: minor inconsistency in analytics/aggregation.
 
-3. **Cross-scenario stress testing not yet executed**
+4. **Cross-scenario stress testing not yet executed**
    - No mixed-authority or ambiguous-authority stress cases logged.
    - Risk: unknown behavior under multi-conflict conditions.
 
@@ -94,16 +115,18 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 
 ## Recommended Next Validation Actions
 
-1. Add one confirming run for **SCN-002** and one for **SCN-003**.
-2. Add a normalized confidence value for RUN-001 if historical reconstruction is permissible.
-3. Introduce SCN-004+ stress scenarios (e.g., competing authority precedence, incomplete inputs).
-4. Re-run this matrix after new runs and compare drift.
+1. Define and store one canonical fixed input package for **SCN-001** before any further repeatability runs.
+2. Reclassify RUN-001 through RUN-003 or exclude them from SCN-001 repeatability counting.
+3. Add one confirming run for **SCN-002** and one for **SCN-003**.
+4. Add a normalized confidence value for RUN-001 if historical reconstruction is permissible.
+5. Introduce SCN-004+ stress scenarios (e.g., competing authority precedence, incomplete inputs).
+6. Re-run this matrix after the SCN-001 baseline is corrected and compare drift.
 
 ---
 
 ## Current Equivalence Verdict (v0.1 evidence set)
 
-- **SCN-001:** Equivalent (strong)
+- **SCN-001:** HOLD — invalid comparison set; five identical runs not established
 - **SCN-002:** Equivalent (provisional)
 - **SCN-003:** Equivalent (provisional)
-- **Overall:** **Sufficient for controlled pre-production progression**, with targeted follow-up runs required before full production confidence.
+- **Overall:** **HOLD for repeatability confidence** until SCN-001 is re-baselined or reclassified and additional confirming runs are added where required.

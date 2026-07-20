@@ -23,3 +23,4 @@ This log tracks every execution used for v0.1 validation.
 - Total scenarios covered: 3
 - Runs with escalation: 1
 - Runs pending documentation: 0
+- 2026-07-20 SCN-001 repeatability batch for RUN-006/RUN-007 placed on HOLD before execution; see `records/kernel-decisions/2026-07-20_scn-001-repeatability-comparability-gate.md`.
