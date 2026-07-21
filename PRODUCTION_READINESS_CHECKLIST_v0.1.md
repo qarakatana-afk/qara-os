@@ -18,7 +18,7 @@ This checklist defines explicit go/no-go gates for promoting QARA OS from pre-pr
 | G2 | Execution Evidence Completeness | Critical | PASS | RUN_LOG + DR + Trace for RUN-001..RUN-005 | All five runs documented |
 | G3 | Scenario Coverage Minimum | Critical | PASS (minimum), Improve | SCN-001, SCN-002, SCN-003 present | Minimum met; repeatability depth still improving |
 | G4 | Escalation Path Functionality | Critical | PASS | RUN-005 (SCN-003) | Authority conflict correctly escalated |
-| G5 | Equivalence Consistency | High | PASS (provisional for SCN-002/003) | EQUIVALENCE_MATRIX.md | Additional confirming runs recommended |
+| G5 | Equivalence Consistency | High | PASS | EQUIVALENCE_MATRIX.md | Five identical runs completed for SCN-001, SCN-002, SCN-003; all equivalent |
 | G6 | Change Control Definition | Critical | FAIL (open) | Not yet formalized in repo | Need documented governance change workflow |
 | G7 | Operational Runbook | Critical | FAIL (open) | Not yet formalized in repo | Need incident/escalation/rollback playbook |
 | G8 | Controlled Launch Plan | High | FAIL (open) | Not yet formalized in repo | Need phased rollout criteria and monitoring |
@@ -43,7 +43,7 @@ This checklist defines explicit go/no-go gates for promoting QARA OS from pre-pr
   - Trace Log
 - Trace includes stage sequence 1–8.
 
-**Current status:** PASS for RUN-001..RUN-005.
+**Current status:** PASS for SCN-001 (RUN-006..RUN-010), SCN-002 (RUN-004, RUN-011..RUN-014), and SCN-003 (RUN-005, RUN-015..RUN-018).
 
 ## G3 — Scenario Coverage Minimum (Critical)
 **Pass criteria (minimum)**
@@ -52,7 +52,7 @@ This checklist defines explicit go/no-go gates for promoting QARA OS from pre-pr
   - Acceptance criteria validation
   - Authority conflict detection
 
-**Current status:** PASS (SCN-001, SCN-002, SCN-003).
+**Current status:** PASS (SCN-001, SCN-002, SCN-003; five identical runs each).
 
 **Strengthening target before broad production**
 - At least 2 runs per scenario class.
@@ -69,7 +69,7 @@ This checklist defines explicit go/no-go gates for promoting QARA OS from pre-pr
 - Equivalent behavior across repeated runs of same scenario class.
 - No unexplained decision drift.
 
-**Current status:** PASS for SCN-001; provisional for SCN-002/SCN-003 pending additional runs.
+**Current status:** PASS for SCN-001, SCN-002, SCN-003 — five identical runs each; 100% equivalence.
 
 ## G6 — Change Control Definition (Critical)
 **Pass criteria**
@@ -111,7 +111,7 @@ This checklist defines explicit go/no-go gates for promoting QARA OS from pre-pr
 1. Create `CHANGE_CONTROL_v0.1.md` and define scope/authority revision process.
 2. Create `OPERATIONS_RUNBOOK_v0.1.md` with incident, escalation, and rollback procedures.
 3. Create `CONTROLLED_LAUNCH_PLAN_v0.1.md` defining pilot scope, monitoring, and expansion criteria.
-4. Add one confirming run each for SCN-002 and SCN-003 to strengthen repeatability evidence.
+4. ~~Add one confirming run each for SCN-002 and SCN-003 to strengthen repeatability evidence~~ — Complete (five-run series for all three scenarios).
 
 ---
 

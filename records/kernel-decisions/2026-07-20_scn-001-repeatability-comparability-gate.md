@@ -7,7 +7,7 @@ VERSION: 1
 WORK
 TITLE: SCN-001 repeatability comparability gate review for RUN-006 and RUN-007
 CLASSIFICATION: Experiment
-STATUS: DRAFT
+STATUS: RESOLVED
 
 RESPONSIBILITY
 RESPONSIBLE HUMAN STEWARD: qarakatana-afk
@@ -96,7 +96,15 @@ RE-EVALUATION TRIGGERS:
 - A new five-run SCN-001 repeatability series is authorized under one unchanged packet.
 REVIEW DATE OR CONDITION: Review when the steward supplies or ratifies the canonical SCN-001 packet.
 
+RESOLUTION (2026-07-21)
+RESOLVED BY: qarakatana-afk (steward authorization)
+ACTION TAKEN:
+- SCN-001-INPUT-v1.0 frozen in SCENARIOS/SCN-001.md.
+- Five-run repeatability series executed: RUN-006..RUN-010; all APPROVED; EQUIVALENT.
+- RUN-001..RUN-003 excluded from repeatability count as historical runs.
+- EQUIVALENCE_MATRIX.md and PRODUCTION_READINESS_CHECKLIST_v0.1.md updated accordingly.
+
 APPROVAL
-HUMAN STEWARD DECISION: PENDING
-APPROVAL DATE: NOT APPLICABLE
-NOTES: Drafted by an AI agent. This HOLD record preserves the comparability finding and does not authorize new SCN-001 repeatability runs.
+HUMAN STEWARD DECISION: APPROVED
+APPROVAL DATE: 2026-07-21
+NOTES: Steward authorized canonical input freeze and five-run series. HOLD resolved.
