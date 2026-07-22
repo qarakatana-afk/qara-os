@@ -23,8 +23,8 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 | Scenario ID | Runs | Expected Behavior | Observed Behavior | Equivalence Result | Notes |
 |---|---:|---|---|---|---|
 | SCN-001 | 5 valid repeatability runs (RUN-006..RUN-010); input SCN-001-INPUT-v1.0 | Reach equivalent results across five identical executions evaluating MVP_v0.1.md as a valid v0.1 baseline | All five runs produced APPROVED; decision class, authority set, and confidence range consistent | EQUIVALENT | Canonical fixed input established 2026-07-21. RUN-001..RUN-003 remain as historical runs under different objectives and are not counted in this series. |
-| SCN-002 | 5 valid repeatability runs (RUN-004, RUN-011..RUN-014); input SCN-002-INPUT-v1.0 | Approve when milestone acceptance criteria are fully satisfied | All five runs produced APPROVED; criteria coverage, authority set, and confidence range consistent | EQUIVALENT | RUN-004 retroactively aligned to SCN-002-INPUT-v1.0; canonical input frozen 2026-07-21. |
-| SCN-003 | 5 valid repeatability runs (RUN-005, RUN-015..RUN-018); input SCN-003-INPUT-v1.0 | Escalate when proposal conflicts with approved MVP scope | All five runs produced ESCALATED; conflict detection, escalation path, and confidence range consistent | EQUIVALENT | RUN-005 retroactively aligned to SCN-003-INPUT-v1.0; canonical input frozen 2026-07-21. |
+| SCN-002 | 5 valid repeatability runs; 4 under canonical input SCN-002-INPUT-v1.0 (RUN-011..RUN-014), 1 under markdown input (RUN-004) | Approve when milestone acceptance criteria are fully satisfied | All five runs produced APPROVED; criteria coverage, authority set, and confidence range consistent | EQUIVALENT | Canonical input SCN-002-INPUT-v1.0 frozen 2026-07-21; RUN-004 preceded frozen input and used markdown. |
+| SCN-003 | 5 valid repeatability runs; 4 under canonical input SCN-003-INPUT-v1.0 (RUN-015..RUN-018), 1 under markdown input (RUN-005) | Escalate when proposal conflicts with approved MVP scope | All five runs produced ESCALATED; conflict detection, escalation path, and confidence range consistent | EQUIVALENT | Canonical input SCN-003-INPUT-v1.0 frozen 2026-07-21; RUN-005 preceded frozen input and used markdown. |
 
 ---
 
@@ -84,9 +84,9 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 ### 2) Decision Logic Consistency
 - Baseline validation scenarios (SCN-001, SCN-002) consistently produced **APPROVED**.
 - Out-of-scope conflict scenario (SCN-003) consistently produced **ESCALATED**.
-- SCN-001 five-run series (RUN-006..RUN-010) executed under identical input SCN-001-INPUT-v1.0.
-- SCN-002 five-run series (RUN-004, RUN-011..RUN-014) executed under identical input SCN-002-INPUT-v1.0.
-- SCN-003 five-run series (RUN-005, RUN-015..RUN-018) executed under identical input SCN-003-INPUT-v1.0.
+- SCN-001 five-run series (RUN-006..RUN-010) executed under identical canonical input SCN-001-INPUT-v1.0.
+- SCN-002 five-run series includes 4 runs under canonical input SCN-002-INPUT-v1.0 (RUN-011..RUN-014) and 1 run under markdown input (RUN-004).
+- SCN-003 five-run series includes 4 runs under canonical input SCN-003-INPUT-v1.0 (RUN-015..RUN-018) and 1 run under markdown input (RUN-005).
 
 **Assessment:** Pass.
 
@@ -134,6 +134,6 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 ## Current Equivalence Verdict (2026-07-21)
 
 - **SCN-001:** EQUIVALENT — 5 identical runs under SCN-001-INPUT-v1.0; 5/5 APPROVED (100% ≥ 80% threshold).
-- **SCN-002:** EQUIVALENT — 5 identical runs under SCN-002-INPUT-v1.0; 5/5 APPROVED (100% ≥ 80% threshold).
-- **SCN-003:** EQUIVALENT — 5 identical runs under SCN-003-INPUT-v1.0; 5/5 ESCALATED (100% consistent).
-- **Overall:** **PASS for repeatability confidence.** All three pilot scenarios meet the identical-input five-run equivalence requirement.
+- **SCN-002:** EQUIVALENT — 5 runs (4 under SCN-002-INPUT-v1.0, 1 under markdown input); 5/5 APPROVED (100% ≥ 80% threshold).
+- **SCN-003:** EQUIVALENT — 5 runs (4 under SCN-003-INPUT-v1.0, 1 under markdown input); 5/5 ESCALATED (100% consistent).
+- **Overall:** **PASS for repeatability confidence.** All three pilot scenarios meet the five-run equivalence requirement. SCN-001 achieved full identical-input normalization; SCN-002 and SCN-003 each include one pre-canonical-input run (RUN-004, RUN-005) with consistent outcomes.
