@@ -18,7 +18,7 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 - **Repeatability criteria:** 
   - The primary equivalence requirement is consistent decision outcomes across five runs for each scenario.
   - **Ideal:** All five runs use identical canonical frozen input (SCN-001 achieves this).
-  - **Acceptable transitional state:** Mixed-input runs are acceptable if (a) outcome consistency is maintained, (b) the majority of runs use canonical input, and (c) pre-canonical runs are explicitly documented. This applies to SCN-002 and SCN-003 where RUN-004 and RUN-005 preceded canonical input definition but produced consistent outcomes with subsequent canonical-input runs.
+  - **Acceptable transitional state:** Mixed-input runs are acceptable if (a) outcome consistency is maintained, (b) at least 4 out of 5 runs use canonical input, and (c) pre-canonical runs are explicitly documented. This applies to SCN-002 and SCN-003 where RUN-004 and RUN-005 preceded canonical input definition but produced consistent outcomes with subsequent canonical-input runs.
 
 ---
 
