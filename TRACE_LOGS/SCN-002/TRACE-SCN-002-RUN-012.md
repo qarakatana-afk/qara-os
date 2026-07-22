@@ -34,4 +34,4 @@ See `DECISION_RECORDS/DR-SCN-002-RUN-012.md`.
 **APPROVED.** The milestone structure defined in ROADMAP.md satisfies the documented acceptance criteria for v0.1 implementation planning. Each milestone is goal-bound with explicit deliverables and success criteria, and the progression is consistent with the approved MVP scope.
 
 ## Notes
-Confidence: High (0.98). Repeatability run 3 of 5 under SCN-002-INPUT-v1.0.
+Confidence: High (0.98). Canonical fixed-input run 2 of 4 under SCN-002-INPUT-v1.0.

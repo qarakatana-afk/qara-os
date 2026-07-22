@@ -33,4 +33,4 @@ See `DECISION_RECORDS/DR-SCN-003-RUN-016.md`.
 **ESCALATED.** The proposal to add a user-facing feedback collection capability conflicts with the scope boundaries in MVP_v0.1.md, which limits v0.1 to Kernel validation only. Governance review is required before implementation.
 
 ## Notes
-Confidence: High (0.99). Repeatability run 3 of 5 under SCN-003-INPUT-v1.0.
+Confidence: High (0.99). Canonical fixed-input run 2 of 4 under SCN-003-INPUT-v1.0.

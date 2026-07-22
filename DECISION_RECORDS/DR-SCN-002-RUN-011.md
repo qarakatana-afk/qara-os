@@ -46,4 +46,4 @@ High (0.97)
 - Equivalence Matrix Reference: EQUIVALENCE_MATRIX.md (SCN-002 comparisons)
 
 ## Notes
-Repeatability run 2 of 5 under SCN-002-INPUT-v1.0 (RUN-004 is run 1).
+Canonical fixed-input run 1 of 4 under SCN-002-INPUT-v1.0. Five-run equivalence set includes RUN-004 (pre-canonical, markdown input).
