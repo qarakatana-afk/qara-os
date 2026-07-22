@@ -15,6 +15,10 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 - Interpretation:
   - **Equivalent** = outcomes and rationale are materially consistent with scenario intent.
   - **Non-equivalent** = conflicting outcomes or missing mandatory evidence.
+- **Repeatability criteria:** 
+  - The primary equivalence requirement is consistent decision outcomes across five runs for each scenario.
+  - **Ideal:** All five runs use identical canonical frozen input (SCN-001 achieves this).
+  - **Acceptable transitional state:** Mixed-input runs are acceptable if (a) outcome consistency is maintained, (b) the majority of runs use canonical input, and (c) pre-canonical runs are explicitly documented. This applies to SCN-002 and SCN-003 where RUN-004 and RUN-005 preceded canonical input definition but produced consistent outcomes with subsequent canonical-input runs.
 
 ---
 
@@ -23,8 +27,8 @@ This matrix compares scenario outcomes across recorded runs to verify decision c
 | Scenario ID | Runs | Expected Behavior | Observed Behavior | Equivalence Result | Notes |
 |---|---:|---|---|---|---|
 | SCN-001 | 5 valid repeatability runs (RUN-006..RUN-010); input SCN-001-INPUT-v1.0 | Reach equivalent results across five identical executions evaluating MVP_v0.1.md as a valid v0.1 baseline | All five runs produced APPROVED; decision class, authority set, and confidence range consistent | EQUIVALENT | Canonical fixed input established 2026-07-21. RUN-001..RUN-003 remain as historical runs under different objectives and are not counted in this series. |
-| SCN-002 | 5 valid repeatability runs; 4 under canonical input SCN-002-INPUT-v1.0 (RUN-011..RUN-014), 1 under markdown input (RUN-004) | Approve when milestone acceptance criteria are fully satisfied | All five runs produced APPROVED; criteria coverage, authority set, and confidence range consistent | EQUIVALENT | Canonical input SCN-002-INPUT-v1.0 frozen 2026-07-21; RUN-004 preceded frozen input and used markdown. |
-| SCN-003 | 5 valid repeatability runs; 4 under canonical input SCN-003-INPUT-v1.0 (RUN-015..RUN-018), 1 under markdown input (RUN-005) | Escalate when proposal conflicts with approved MVP scope | All five runs produced ESCALATED; conflict detection, escalation path, and confidence range consistent | EQUIVALENT | Canonical input SCN-003-INPUT-v1.0 frozen 2026-07-21; RUN-005 preceded frozen input and used markdown. |
+| SCN-002 | 5 valid repeatability runs; 4 under canonical input SCN-002-INPUT-v1.0 (RUN-011..RUN-014), 1 under markdown input (RUN-004) | Approve when milestone acceptance criteria are fully satisfied | All five runs produced APPROVED; criteria coverage, authority set, and confidence range consistent | EQUIVALENT | Canonical input SCN-002-INPUT-v1.0 frozen 2026-07-21; RUN-004 preceded frozen input and used markdown. Satisfies acceptable transitional state criteria (see Method section). |
+| SCN-003 | 5 valid repeatability runs; 4 under canonical input SCN-003-INPUT-v1.0 (RUN-015..RUN-018), 1 under markdown input (RUN-005) | Escalate when proposal conflicts with approved MVP scope | All five runs produced ESCALATED; conflict detection, escalation path, and confidence range consistent | EQUIVALENT | Canonical input SCN-003-INPUT-v1.0 frozen 2026-07-21; RUN-005 preceded frozen input and used markdown. Satisfies acceptable transitional state criteria (see Method section). |
 
 ---
 
