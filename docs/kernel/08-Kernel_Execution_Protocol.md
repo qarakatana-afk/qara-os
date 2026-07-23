@@ -48,7 +48,7 @@ Missing information that prevents responsible judgment shall produce HOLD.
 
 ## 4. Source Loading Order
 
-Before analysis, the executor shall resolve controlling authority in this order:
+Before analysis, the executor shall resolve Qara OS internal controlling authority in this order:
 
 1. QS-002 - Founder's Charter.
 2. QS-001 - QARA Identity.
@@ -60,6 +60,10 @@ Before analysis, the executor shall resolve controlling authority in this order:
 8. Applicable lower-level specifications.
 
 The executor shall use the highest relevant authority first.
+
+This loading order governs Qara OS internal authority resolution.
+
+The broader authority hierarchy, including applicable law and binding legal obligation, is governed by QS-006 Section 4.
 
 The executor shall not select a lower-level principle merely because it produces a preferred result.
 

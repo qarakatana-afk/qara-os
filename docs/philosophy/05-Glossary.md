@@ -164,6 +164,24 @@ A technology, service, system, or experience developed or stewarded by Qara Labs
 
 The explicit statement of who a product serves, the friction it addresses, and the human outcome it seeks to improve.
 
+### Product Specification
+
+A specification for the purpose, served group, behavior, risks, and evidence requirements of a specific product.
+
+Product specifications are governed by higher-level Source and system specifications.
+
+### Qara OS
+
+The governing system used to keep Qara Labs products, decisions, and technology aligned with the Company's identity, Founder's Charter, and core principles.
+
+Qara OS is not a single application. It includes Source specifications, lower-level specifications, product specifications, and implementation materials governed by them.
+
+### Re-evaluation
+
+A required return to a prior decision or record when new evidence, changed scope, changed purpose, amended authority, or material risk requires renewed review.
+
+Re-evaluation does not silently extend prior approval to materially changed work.
+
 ### Restraint
 
 The deliberate choice not to add, interrupt, respond, automate, or display when doing so would create more noise than value.
@@ -178,6 +196,18 @@ Safety does not mean the elimination of all risk.
 
 The condition produced when unnecessary complexity has been removed while necessary capability, context, and understanding are preserved.
 
+### Source
+
+Material reserved for identity, constitutional authority, foundational philosophy, core principles, controlling definitions, and system entry requirements.
+
+Source governs multiple products and remains applicable across technologies.
+
+### Source Specification
+
+A specification classified as Source.
+
+Source Specifications establish identity, constitutional authority, foundational philosophy, core principles, controlling definitions, or system entry requirements that govern lower-level work.
+
 ### Steward
 
 A person, team, or authorized agent entrusted with responsibility for protecting and applying Qara Labs principles, resources, products, or obligations within a defined scope.
@@ -187,6 +217,10 @@ Authority exercised by a Steward is a responsibility, not an entitlement.
 ### Stewardship
 
 The responsible care of trust, attention, information, technology, knowledge, products, and governing principles for the benefit of present and future people affected by Qara Labs.
+
+### System Specification
+
+A reusable specification for design, engineering, privacy, security, accessibility, memory, artificial intelligence, or other operating requirements governed by Source authority.
 
 ### Technology
 
@@ -225,6 +259,12 @@ A user shall be treated as a person first and not solely as a metric, account, s
 A meaningful benefit produced for a person, group, or legitimate Company purpose.
 
 Revenue may provide evidence that value has been delivered but does not define value by itself.
+
+### Work Statement
+
+The concise statement required before material work begins.
+
+A Work Statement shall identify the work title, person or group served, human outcome, friction or noise addressed, relevant specifications, material assumptions, primary risks, proposed smallest responsible action, evidence required, and responsible human steward.
 
 ## 4. Definition Standard
 

@@ -42,7 +42,7 @@ Escalation is required when any of the following applies:
 7. The work expands beyond the approved scope of an ACTIVE Kernel Decision Record.
 8. An artificial intelligence agent identifies a conflict it cannot resolve without human judgment.
 9. A proposed exception would weaken a controlling requirement.
-10. The Founder, responsible steward, or authorized reviewer determines that independent review is necessary.
+10. The Founder, responsible steward, or another human steward acting within the scope of authority determines that independent review is necessary.
 
 ## 4. Escalation Levels
 
@@ -98,6 +98,8 @@ The request shall be specific enough for the reviewer to understand the issue wi
 
 ## 6. Reviewer Responsibilities
 
+A reviewer shall be a human steward acting within the scope of authority established under the Founder's Charter.
+
 A reviewer shall:
 
 1. Confirm the appropriate level of review.
@@ -117,9 +119,13 @@ A reviewer shall not substitute rank or confidence for analysis.
 
 A review shall produce one outcome:
 
+A Review Outcome governs the continued validity, required treatment, or replacement of an existing Kernel Decision or Kernel Decision Record.
+
+A Review Outcome is not a new Kernel Decision.
+
 ### AFFIRM
 
-The existing Kernel Decision remains valid without substantive change.
+The existing Kernel Decision and related record remain valid without substantive change.
 
 ### MODIFY
 
@@ -129,7 +135,7 @@ A MODIFY outcome requires an updated or replacement Kernel Decision Record.
 
 ### RETURN
 
-The matter is returned for additional evidence, clarification, revision, or lower-level review.
+The existing matter is returned for additional evidence, clarification, revision, or lower-level review before the current decision can be relied upon.
 
 RETURN shall state exactly what is missing.
 
@@ -141,7 +147,7 @@ OVERRULE shall identify the controlling authority or evidence requiring the chan
 
 ### AMENDMENT REQUIRED
 
-The desired action cannot proceed under current Source authority and may proceed only if the relevant constitutional amendment is adopted.
+The desired action addressed by the existing decision cannot proceed under current Source authority and may proceed only if the relevant constitutional amendment is adopted.
 
 AMENDMENT REQUIRED is not approval of the amendment.
 

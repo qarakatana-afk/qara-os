@@ -184,4 +184,4 @@ Amendments shall follow the Founder's Charter.
 - [ ] Human accountability remains explicit.
 - [ ] Minimum output defers to the QS-009 durable record standard.
 - [ ] Re-evaluation conditions are defined.
-- [ ] The specification remains consistent with QS-001 through QS-010.
+- [ ] The specification remains consistent with QS-001 through QS-006.

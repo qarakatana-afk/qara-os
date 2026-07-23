@@ -208,7 +208,7 @@ A material record shall identify the responsible human steward and the human dec
 
 An artificial intelligence agent may draft the record, perform analysis, and recommend a Kernel Decision.
 
-The record shall not be marked ACTIVE until the responsible human steward has approved the decision where human approval is required by QS-007 or QS-008.
+The record shall not be marked ACTIVE until the responsible human steward has approved the recorded decision.
 
 ## 12. Corrections
 
