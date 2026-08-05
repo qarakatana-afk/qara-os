@@ -1,127 +1,170 @@
-# QARA OS v0.1 Operations Runbook
+# QARA OS Operations Runbook v0.1
 
 ## Purpose
 
-This runbook defines how QARA OS incidents are detected, triaged, escalated, contained, and closed during controlled production operation.
+This runbook defines the minimum procedure to operate QARA OS in production.
+This document is operational only. It does not create or modify authority.
+Controlling authority remains in Source and Kernel specifications (QS-001 through QS-010).
 
-## Operational Context
+---
 
-QARA OS is a governance operating system. Operational incidents are failures in decision integrity, authority handling, evidence traceability, or controlled rollout behavior.
+# Preconditions
 
-Primary operating records:
+Before beginning operations, verify:
 
-- Kernel decisions: `records/kernel-decisions/`
-- Assumptions: `records/assumption-log/`
-- Risks: `records/risk-log/`
-- Run evidence: `RUN_LOG.md`, `DECISION_RECORDS/`, `TRACE_LOGS/`
+- Repository is synchronized.
+- Required governing specifications are present and accessible (QS-001 through QS-010).
+- Kernel is available.
+- Decision Record templates are available.
+- Trace Log templates are available.
+- Production readiness artifacts are accessible, including `PRODUCTION_READINESS_CHECKLIST_v0.1.md`.
 
-## Incident Severity Levels
+If any prerequisite is missing, suspend operations until restored.
 
-| Severity | Definition | Example |
-|---|---|---|
-| SEV-1 Critical | Active or imminent material harm to governance integrity, safety, rights, privacy, or irreversible scope breach | Unauthorized scope expansion, missing constitutional escalation |
-| SEV-2 High | Material control failure with contained blast radius; no irreversible harm yet | Decision record integrity gap, unresolved authority conflict in active flow |
-| SEV-3 Moderate | Process degradation that can continue temporarily with explicit mitigation | Delayed record completion, monitoring lapse with compensating checks |
-| SEV-4 Low | Minor issue with no material governance impact | Non-substantive formatting or reporting issue |
+---
 
-## Incident Response Workflow
+# Daily Startup
 
-1. **Detect and declare**
-   - Open incident record and assign Incident ID: `INC-YYYY-NNN`.
-2. **Stabilize**
-   - Apply smallest responsible containment action.
-   - HOLD any affected material action if decision integrity is uncertain.
-3. **Classify severity**
-   - Assign SEV-1..SEV-4 and responsible human steward.
-4. **Assess authority and risk**
-   - Confirm controlling specifications and whether escalation is mandatory.
-5. **Escalate when triggered**
-   - Follow `docs/kernel/10-Kernel_Escalation_and_Review.md` levels.
-6. **Mitigate / rollback / disable**
-   - Execute approved containment or reversion steps.
-7. **Communicate**
-   - Send status updates per communications rules below.
-8. **Recover and validate**
-   - Confirm controls restored and required records complete.
-9. **Close with re-entry decision**
-   - Document root cause, corrective actions, and re-entry approval.
+1. Synchronize repository.
+2. Review unresolved HOLD records.
+3. Review open Decision Records.
+4. Confirm governing documents have not changed.
+5. Begin work.
 
-## Operational Escalation Triggers
+---
 
-Escalation is mandatory when any of the following occurs:
+# Standard Workflow
 
-- Potential conflict with Founder's Charter or controlling authority
-- Consequential unresolved judgment during incident handling
-- Unauthorized change to scope, authority, or production boundary
-- Material evidence dispute affecting decision validity
-- Repeated incident pattern indicating systemic control weakness
+For material work, execute Kernel flow according to:
+- QS-008 (Kernel Execution Protocol)
+- QS-009 (Kernel Decision Record)
 
-## Rollback / Disable Procedures
+Record artifacts in repository locations defined by current standards.
+Do not duplicate or reinterpret Kernel steps in this runbook.
 
-When containment requires rollback or disable:
+---
 
-1. Stop affected workflow and mark status HOLD.
-2. Revert to last approved known-good state or document baseline.
-3. Disable unsafe path until steward re-approval.
-4. Record rollback/disable rationale in `records/kernel-decisions/`.
-5. Update risk and assumption logs if incident invalidates prior beliefs.
-6. Require explicit re-entry approval before resuming normal operation.
+# Failure Conditions
 
-Emergency action may be taken immediately only to prevent foreseeable harm and must be recorded as soon as practical.
+Suspend work immediately if:
 
-## Ownership and Communications Rules
+- Authority conflict exists.
+- Required authority is missing.
+- Kernel execution cannot complete.
+- Evidence cannot be produced.
+- Repository integrity is uncertain.
 
-- **Founder**: final human authority for constitutional or scope-critical incidents.
-- **Responsible human steward**: incident commander by default; accountable for classification, containment, and closure evidence.
-- **Reviewer (if escalated)**: independent review outcome per QS-010.
+Issue and record HOLD according to QS-007 and QS-009 before stopping.
 
-Communication minimums:
+---
 
-- SEV-1: immediate notification to Founder + steward, then updates at least every 60 minutes until stabilized.
-- SEV-2: notify steward and Founder in same operating cycle; updates at least every 4 hours while active.
-- SEV-3/4: notify steward in same cycle; include in next daily/weekly review.
+# Incident Response Process
 
-Communications must separate FACT, ASSUMPTION, UNCERTAINTY, and RISK.
+When a failure condition or operational incident occurs:
 
-## Minimum Incident Record Template
+1. **Immediate Actions:**
+   - Suspend all in-progress work immediately.
+   - Issue and record a HOLD according to QS-007 and QS-009.
+   - Document the incident with timestamp, observed symptoms, and affected artifacts.
 
-```
-INCIDENT RECORD
-INCIDENT ID:
-DATE/TIME OPENED (UTC):
-REPORTED BY:
-RESPONSIBLE HUMAN STEWARD:
-SEVERITY:
-STATUS: OPEN / STABILIZING / MONITORING / CLOSED
+2. **Assessment:**
+   - Determine the scope of impact (single run, multiple scenarios, repository integrity).
+   - Identify whether the issue requires escalation per QS-010 criteria.
+   - Check if rollback or disable procedures are needed (see below).
 
-INCIDENT SUMMARY:
-AFFECTED ARTIFACTS:
-CONTROLLING SPECIFICATIONS:
+3. **Resolution:**
+   - For authority conflicts or missing authority: Follow QS-010 escalation process.
+   - For Kernel execution failures: Review trace logs, verify governing document availability, retry if transient.
+   - For repository integrity issues: Verify synchronization, check for uncommitted changes, restore from known-good state if needed.
 
-FACTS:
-ASSUMPTIONS:
-UNCERTAINTIES:
-RISKS:
+4. **Recovery:**
+   - Once resolved, document the resolution in the HOLD record.
+   - Verify all preconditions before resuming operations.
+   - Resume work only after confirming the root cause has been addressed.
 
-CONTAINMENT ACTIONS:
-ROLLBACK OR DISABLE ACTIONS:
-ESCALATION LEVEL (if any):
-REVIEW OUTCOME (if any):
+---
 
-COMMUNICATION LOG:
-RE-ENTRY CRITERIA CHECK:
-CLOSE DECISION:
-CLOSED BY:
-DATE/TIME CLOSED (UTC):
-```
+# Escalation Contacts and Ownership
 
-## Re-Entry Criteria After Incident
+## Primary Owner
+- **Repository Owner:** qarakatana-afk (GitHub: @qarakatana-afk)
+- **Responsibility:** Authority resolution, governance decisions, HOLD disposition
 
-Normal operation may resume only when all conditions are true:
+## Escalation Triggers
+Per QS-010, escalate immediately when:
+- Authority conflict cannot be resolved within single-executor scope
+- Required authority is missing or ambiguous
+- Kernel execution produces unexpected HOLD or unresolvable outcome
+- Repository integrity is compromised
 
-- Immediate risk is contained
-- Required escalation/review outcomes are recorded
-- Rollback/disable actions are verified complete
-- Required corrective actions are assigned with owners and dates
-- Responsible human steward (and Founder for SEV-1 or scope-critical SEV-2) approves re-entry
-- Incident record is archived and linked to relevant decision/risk/assumption records
+## Escalation Procedure
+1. Issue HOLD record according to QS-009.
+2. Notify repository owner via GitHub issue tagged with `HOLD` label.
+3. Include: HOLD record link, failure summary, attempted resolution steps.
+4. Suspend all operations until owner provides disposition.
+
+## Response Expectations
+- **Acknowledgment:** Within 24 hours of escalation.
+- **Disposition:** Within 72 hours for Critical severity, 7 days for High severity.
+- **Follow-up:** Owner updates HOLD record with resolution path and timeline.
+
+---
+
+# Rollback and Disable Procedures
+
+## Rollback Trigger Conditions
+Initiate rollback when:
+- A committed change introduces authority conflict discovered post-commit.
+- Evidence artifacts are found to be inconsistent or invalid after publication.
+- A production decision must be reversed due to governance review outcome.
+
+## Rollback Procedure
+1. **Identify Scope:**
+   - Determine which commits, artifacts, or decisions require rollback.
+   - Document the rollback justification in a new Decision Record or HOLD record.
+
+2. **Execute Rollback:**
+   - For repository changes: Use `git revert <commit-hash>` to reverse the commit.
+   - For decision artifacts: Mark the original Decision Record as SUPERSEDED and issue a correcting Decision Record.
+   - For published documentation: Update with a clear deprecation notice and pointer to corrected version.
+
+3. **Verify Rollback:**
+   - Confirm repository is in a consistent state.
+   - Re-run affected scenarios to validate that the rollback resolved the issue.
+   - Update RUN_LOG, EQUIVALENCE_MATRIX, and PRODUCTION_READINESS_CHECKLIST as needed.
+
+4. **Communicate Rollback:**
+   - Update all stakeholders via GitHub issue or commit message.
+   - Document the rollback event in CHANGELOG.md with justification.
+
+## Disable Procedure (Production Suspension)
+If QARA OS operations must be suspended entirely:
+
+1. **Issue Suspension Notice:**
+   - Create a `SUSPENSION_NOTICE.md` file in the repository root.
+   - Include: suspension reason, effective date, expected resolution timeline, contact for inquiries.
+
+2. **Mark Repository Status:**
+   - Update README.md with a prominent suspension banner.
+   - Add a `suspended` label to the repository topics.
+
+3. **Halt All Operations:**
+   - No new runs, decisions, or scenario executions.
+   - No commits except for hotfixes addressing the suspension root cause.
+
+4. **Resolution and Re-enabling:**
+   - Address the root cause per QS-010 escalation outcome.
+   - Issue a resolution Decision Record.
+   - Remove suspension notice and update README.md.
+   - Resume operations per standard startup procedure.
+
+---
+
+# Shutdown
+
+Before ending operations:
+
+- Save all artifacts.
+- Verify repository consistency.
+- Commit completed work.
+- Record outstanding HOLD items.
