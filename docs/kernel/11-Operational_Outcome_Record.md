@@ -118,7 +118,7 @@ Amendments shall follow the Founder's Charter.
 
 ## 10. Worked Example Reference
 
-Pilot OOR implementation: [`records/operational-outcomes/2026-08-09_bridge-build-auth-outcome.md`](../../records/operational-outcomes/2026-08-09_bridge-build-auth-outcome.md)
+Pilot OOR implementation: [`../../records/operational-outcomes/2026-08-09_bridge-build-auth-outcome.md`](../../records/operational-outcomes/2026-08-09_bridge-build-auth-outcome.md)
 
 ## Ratification Checklist
 

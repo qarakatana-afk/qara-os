@@ -106,7 +106,7 @@ IMPLEMENTATION RECORDS:
    - HOLD: pause pending missing evidence.
    - REJECT: close proposal with rationale.
 4. If C3 approved in principle, execute Charter amendment flow before implementation.
-5. Log all outcomes in `records/governance-changes/PHASE_1_CHANGELOG.md`.
+5. Log all outcomes in the active governance changelog under `records/governance-changes/`.
 
 ## 6. Human Accountability Requirement
 

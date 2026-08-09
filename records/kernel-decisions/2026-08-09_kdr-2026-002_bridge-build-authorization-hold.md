@@ -20,12 +20,12 @@ FRICTION OR NOISE ADDRESSED: Ambiguity about whether Bridge build authorization 
 
 AUTHORITY
 CONTROLLING SPECIFICATIONS:
-- /home/runner/work/qara-os/qara-os/source/FOUNDERS_CHARTER.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/07-Kernel.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/08-Kernel_Execution_Protocol.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/09-Kernel_Decision_Record.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/10-Kernel_Escalation_and_Review.md
-HIGHEST CONTROLLING AUTHORITY: /home/runner/work/qara-os/qara-os/source/FOUNDERS_CHARTER.md
+- source/FOUNDERS_CHARTER.md
+- docs/kernel/07-Kernel.md
+- docs/kernel/08-Kernel_Execution_Protocol.md
+- docs/kernel/09-Kernel_Decision_Record.md
+- docs/kernel/10-Kernel_Escalation_and_Review.md
+HIGHEST CONTROLLING AUTHORITY: source/FOUNDERS_CHARTER.md
 LOWER-LEVEL SPECIFICATIONS REVIEWED: NOT APPLICABLE
 
 ANALYSIS

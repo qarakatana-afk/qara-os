@@ -20,18 +20,18 @@ FRICTION OR NOISE ADDRESSED: Repeated sequencing confusion between pre-build val
 
 AUTHORITY
 CONTROLLING SPECIFICATIONS:
-- /home/runner/work/qara-os/qara-os/source/FOUNDERS_CHARTER.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/07-Kernel.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/08-Kernel_Execution_Protocol.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/09-Kernel_Decision_Record.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/10-Kernel_Escalation_and_Review.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/11-Operational_Outcome_Record.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/12-Pattern_Assessment_Protocol.md
-- /home/runner/work/qara-os/qara-os/docs/kernel/13-Change_Proposal_and_Routing.md
-HIGHEST CONTROLLING AUTHORITY: /home/runner/work/qara-os/qara-os/source/FOUNDERS_CHARTER.md
+- source/FOUNDERS_CHARTER.md
+- docs/kernel/07-Kernel.md
+- docs/kernel/08-Kernel_Execution_Protocol.md
+- docs/kernel/09-Kernel_Decision_Record.md
+- docs/kernel/10-Kernel_Escalation_and_Review.md
+- docs/kernel/11-Operational_Outcome_Record.md
+- docs/kernel/12-Pattern_Assessment_Protocol.md
+- docs/kernel/13-Change_Proposal_and_Routing.md
+HIGHEST CONTROLLING AUTHORITY: source/FOUNDERS_CHARTER.md
 LOWER-LEVEL SPECIFICATIONS REVIEWED:
-- /home/runner/work/qara-os/qara-os/records/operational-outcomes/2026-08-09_bridge-build-auth-outcome.md
-- /home/runner/work/qara-os/qara-os/records/governance-changes/PHASE_1_CHANGELOG.md
+- records/operational-outcomes/2026-08-09_bridge-build-auth-outcome.md
+- records/governance-changes/PHASE_1_CHANGELOG.md
 
 ANALYSIS
 FACTS:

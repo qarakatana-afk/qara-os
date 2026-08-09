@@ -4,7 +4,8 @@ version: 0.2
 status: active-development
 phase_status:
   phase_1_governed_learning: complete
-  phase_2: Foundation complete, now able to self-improve
+  phase_2: in_progress
+  phase_2_note: Foundation complete, now able to self-improve
 
 description: >
   Qara OS is the governing authority layer for Qara Labs. It defines how
