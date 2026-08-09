@@ -2,6 +2,9 @@ name: Qara OS
 type: governance-operating-system
 version: 0.2
 status: active-development
+phase_status:
+  phase_1_governed_learning: complete
+  phase_2: Foundation complete, now able to self-improve
 
 description: >
   Qara OS is the governing authority layer for Qara Labs. It defines how
@@ -56,6 +59,18 @@ authority_order:
     path: QS-010_Kernel_Escalation_and_Review_v0.2.md
     spec: QS-010
     description: Escalation paths and human review process
+  - order: 11
+    path: docs/kernel/11-Operational_Outcome_Record.md
+    spec: QS-011
+    description: Operational outcome record linking decisions to execution results
+  - order: 12
+    path: docs/kernel/12-Pattern_Assessment_Protocol.md
+    spec: QS-012
+    description: Pattern assessment process for governed-learning escalation
+  - order: 13
+    path: docs/kernel/13-Change_Proposal_and_Routing.md
+    spec: QS-013
+    description: Change proposal classification and C1/C2/C3 routing
 
 # ─── Supplemental Reference Documents ────────────────────────────────────────
 # Informative context. These do not override authority_order documents.
@@ -115,5 +130,7 @@ folders:
   kernel_decisions: records/kernel-decisions/
   assumption_log: records/assumption-log/
   risk_log: records/risk-log/
+  operational_outcomes: records/operational-outcomes/
+  governance_changes: records/governance-changes/
   product_templates: templates/product/
   company_templates: templates/company/
