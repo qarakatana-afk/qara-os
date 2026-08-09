@@ -18,6 +18,19 @@ QARA OS v0.1 is considered successful when all outcomes in [MVP_v0.1.md](MVP_v0.
 
 What should be added only after evidence supports it?
 
+### Phase 1 — Governed Learning Layer (Complete)
+
+- Operational Outcome Record specification added (QS-011).
+- Pattern Assessment Protocol added (QS-012).
+- Change Proposal and Routing specification added (QS-013).
+- Closed-loop pilot completed using Bridge build authorization HOLD:
+  KDR-2026-002 → OOR-2026-001 → CP-2026-001 (C2) → KDR-2026-003.
+
+### Phase 2 — Bridge Through Running Governance
+
+- Foundation complete, now able to self-improve.
+- Bridge build authorization can now be reassessed through the governed-learning system.
+
 ## Not Yet
 
 What are we intentionally not building?
