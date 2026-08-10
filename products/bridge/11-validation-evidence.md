@@ -19,11 +19,24 @@ This document is the evidence collection record for Bridge's validation gates as
 
 ### Method 1: Problem Interviews (10 interviews)
 
+> **Research authorization note:** Problem interviews are a pre-build research activity and may
+> begin before build authorization is granted. However, interviews require separate research
+> authorization from the Founder before participant contact begins. The following consent and
+> privacy protocol must be in place before any interview is conducted:
+> - Participants must give explicit informed consent before the interview begins.
+> - No personally identifiable information may be recorded without participant consent.
+> - Interview notes must be anonymized before being stored or referenced in this document.
+> - Any participant who discloses a personal safety situation must be referred to appropriate
+>   resources; the interviewer must not attempt to provide direct support.
+> - Data collected during research must not be used for any purpose other than validating the
+>   problem statement.
+> Founder sign-off on research protocol required: [Founder name] [Date]
+
 ```
 Required to proceed: 7 of 10 confirm the problem as significant; at least 5 describe an 
 emotional dimension (not just a practical one)
 
-Status: [ ] NOT STARTED  [ ] IN PROGRESS  [x] PENDING — awaiting build authorization
+Status: [x] NOT STARTED — pre-build activity; independent of build authorization
 
 Interview log:
   Interview 1: [DATE] [PARTICIPANT PROFILE] [KEY FINDING] [Emotional dimension: Y/N]
@@ -48,10 +61,9 @@ Owner sign-off: [Founder name] [Date]
 Required to proceed: 6 of 8 participants understand what to do next at each step without 
 prompting; none describe the concept as "just another translation app"
 
-Status: [ ] NOT STARTED  [ ] IN PROGRESS  [x] PENDING — awaiting build authorization
+Status: [x] NOT STARTED — pre-build activity; independent of build authorization
 
 Participant log:
-  Participant 1: [DATE] [PROFILE] [Navigation success: Y/N] ["Just another app": Y/N]
   Participant 2: [DATE] [PROFILE] [Navigation success: Y/N] ["Just another app": Y/N]
   Participant 3: [DATE] [PROFILE] [Navigation success: Y/N] ["Just another app": Y/N]
   Participant 4: [DATE] [PROFILE] [Navigation success: Y/N] ["Just another app": Y/N]
@@ -71,7 +83,7 @@ Owner sign-off: [Founder name] [Date]
 Required to proceed: Average rating ≥ 4/5 on meaning; ≥ 3.5/5 on tone and naturalness 
 for priority language pairs
 
-Status: [ ] NOT STARTED  [ ] IN PROGRESS  [x] PENDING — awaiting build authorization
+Status: [x] NOT STARTED — pre-build activity; independent of build authorization and translation API decision
 
 Language pairs tested:
   Pair 1: [LANGUAGE A → LANGUAGE B]
@@ -179,7 +191,7 @@ Pre-launch safeguard checklist (from 07-risk-privacy-and-safety.md):
   - [ ] DPA with translation provider signed
   - [ ] Crisis resource disclosure implemented
   - [ ] Security penetration test completed; findings remediated
-  - [ ] GDPR compliance documentation complete
+  - [ ] GDPR compliance documentation complete (applicability and scope must be confirmed by qualified legal counsel before this item can be checked)
   - [ ] Data deletion tested (user can delete account and all data within 30 days)
   - [ ] No default storage confirmed by engineering audit
   - [ ] HR-01 Kernel Decision recorded
