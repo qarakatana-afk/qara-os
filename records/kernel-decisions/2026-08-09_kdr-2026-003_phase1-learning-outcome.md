@@ -71,6 +71,6 @@ RE-EVALUATION TRIGGERS:
 REVIEW DATE OR CONDITION: Next review on completion of C2 founder decision.
 
 APPROVAL
-HUMAN STEWARD DECISION: APPROVED
-APPROVAL DATE: 2026-08-09
-NOTES: Founder approved the governed-learning Phase 1 foundation. CP-2026-001 is authorized for exact amendment drafting only. The QS-008 amendment remains pending Founder approval of the exact diff. Bridge build remains HOLD.
+HUMAN STEWARD DECISION: PENDING
+APPROVAL DATE: NOT APPLICABLE
+NOTES: This record is ready for Founder decision.
