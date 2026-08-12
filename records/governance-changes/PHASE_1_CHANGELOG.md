@@ -23,12 +23,12 @@ Tracks patterns identified, change proposals generated, C1/C2/C3 routing decisio
    - Route: **C2 (Coherence)**
    - Target: `../../docs/kernel/08-Kernel_Execution_Protocol.md`
    - Proposal: Clarify pre-build validation gates as an independent authorization track preceding build authorization.
-   - Founder decision point: Required (pending)
+   - Founder decision point: Approved for exact amendment drafting only; exact QS-008 diff approval still required.
 
 ### C1/C2/C3 Decisions
 
 - C1: None
-- C2: CP-2026-001 opened (pending Founder decision)
+- C2: CP-2026-001 opened (Founder approved drafting scope; exact amendment approval pending)
 - C3: None
 
 ### Cumulative Impact

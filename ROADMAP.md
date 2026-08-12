@@ -29,7 +29,7 @@ What should be added only after evidence supports it?
 ### Phase 2 — Bridge Through Running Governance
 
 - Foundation complete, now able to self-improve.
-- Bridge build authorization can now be reassessed through the governed-learning system.
+- Bridge build authorization remains HOLD until unresolved Founder decisions, required pre-build validation evidence, and exact QS-008 amendment approval prerequisites are satisfied and a fresh build-authorization KDR is issued.
 
 ## Not Yet
 

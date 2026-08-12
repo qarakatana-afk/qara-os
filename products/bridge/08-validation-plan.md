@@ -25,6 +25,8 @@ Engagement metrics (opens, clicks, session length) are not validation. Evidence 
 
 ## 2. Pre-Build Validation
 
+Pre-build validation is an independent governance track. These methods are executed while build authorization remains HOLD, and their evidence becomes an input to any later build-authorization decision.
+
 ```
 Method 1: Problem interviews with 10 people who have a close personal relationship 
 across a language barrier
