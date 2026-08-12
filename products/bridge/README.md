@@ -64,13 +64,30 @@ This directory follows the Qara OS product template structure exactly. Each file
 
 ```
 CURRENT STATUS: NOT AUTHORIZED FOR BUILD
+RECONCILIATION DATE: 2026-08-12
 
-Required before build may begin:
-  - [ ] Founder has reviewed and approved documents 01–09
-  - [ ] Kernel Decision for build authorization recorded and marked ACTIVE
-  - [ ] All open decisions in 10-open-decisions.md resolved
-  - [ ] Translation API data processing agreement signed
-  - [ ] Legal review of GDPR, COPPA, and CCPA applicability complete
+Completed (no longer blocking):
+  - [x] Qara OS governed-learning Phase 1 artifacts merged to main (PR #8, commit 1553b19)
+        → OOR-2026-001, KDR-2026-003 (PROCEED recommendation), and PHASE_1_CHANGELOG on main
+        → KDR-2026-003 Founder sign-off still PENDING; re-evaluation of KDR-2026-002 now required
+
+Still required before build may begin:
+  - [ ] KDR-2026-003 Founder sign-off on Phase 1 governed-learning closure
+  - [ ] Fresh Bridge build-authorization Kernel Decision
+        (KDR-2026-002 RE-EVALUATION conditions are met; HOLD must be resolved by a new KDR)
+  - [ ] OD-01: Translation API selected (provider, pricing, DPA availability)
+  - [ ] OD-02: DPA signed with selected translation provider (blocks Phase 1)
+  - [ ] OD-03: STT approach decided (self-hosted Whisper vs external API)
+  - [ ] OD-04: Secondary user authentication approach decided
+  - [ ] OD-05: Hosting environment and region confirmed
+  - [ ] OD-06: Database encryption and key management approach confirmed
+  - [ ] OD-07: CI/CD pipeline approach confirmed
+  - [ ] OD-08: Legal review of GDPR, COPPA, and CCPA applicability complete (blocks Phase 1)
+  - [ ] Pre-build validation evidence collected (Methods 1–3 in 11-validation-evidence.md;
+        independent of build authorization — may begin after research protocol is approved)
+
+Note: Validation placeholders in 11-validation-evidence.md are not evidence. No gate
+      may be marked passed until real evidence is recorded.
 ```
 
 ---
@@ -87,7 +104,7 @@ Required before build may begin:
 ## Related Files
 
 - `records/kernel-decisions/2026-07-17_bridge-reference-implementation.md` — Kernel Decision covering this reference implementation (HOLD)
-- `records/kernel-decisions/2026-08-05_bridge-build-authorization.md` — Kernel Decision for build authorization (HOLD — awaiting founder review)
+- `records/kernel-decisions/2026-08-09_kdr-2026-002_bridge-build-authorization-hold.md` — Kernel Decision for build authorization (HOLD — re-evaluation required; Phase 1 complete)
 - `records/assumption-log/bridge-assumptions.md` — Bridge assumption log
 - `records/risk-log/bridge-risks.md` — Bridge risk register
 - `companies/bridge/` — Corresponding company reference implementation
