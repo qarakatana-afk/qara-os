@@ -27,6 +27,7 @@ build authorization Kernel Decision
 Required before build may begin:
   - [ ] Human steward (Founder) has reviewed and approved documents 01–08
   - [ ] Kernel Decision for build authorization is recorded in records/kernel-decisions/
+  - [ ] Pre-build validation evidence from 08-validation-plan.md Methods 1-3 is completed and linked
   - [ ] Open architectural decisions in 06-technical-architecture.md section 9 are resolved
   - [ ] Translation API data processing agreement is signed
   - [ ] Legal review of GDPR, COPPA, and CCPA applicability is complete
@@ -37,6 +38,8 @@ Required before build may begin:
 ## 2. Build Sequence
 
 Build in this sequence. Do not begin a phase before the previous phase's definition of done is met.
+
+Pre-build validation sequencing rule: Methods 1-3 in 08-validation-plan.md are executed before build authorization and must not be marked as awaiting build authorization.
 
 ### Phase 0 — Foundation (Pre-build)
 

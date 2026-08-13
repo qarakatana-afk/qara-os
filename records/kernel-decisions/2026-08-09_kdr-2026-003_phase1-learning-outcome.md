@@ -2,7 +2,7 @@ KERNEL DECISION RECORD
 
 RECORD ID: KDR-2026-003
 DATE: 2026-08-09
-VERSION: 1
+VERSION: 2
 
 WORK
 TITLE: Governed-learning Phase 1 closure decision
@@ -49,7 +49,7 @@ SIMPLICITY TEST: Keep Kernel v0.2 unchanged and route a focused C2 coherence pro
 TRUST TEST: An informed reviewer can trace evidence from KDR-2026-002 to this decision.
 CAPABILITY EFFECT: Qara OS can now self-observe and propose governed improvements.
 EVIDENCE NEEDED:
-- Founder decision on C2 proposal to clarify pre-build vs build-authorization gates in QS-008.
+- Founder approval of the exact QS-008 amendment diff drafted under CP-2026-001 before any protocol amendment is accepted.
 
 PROPOSED ACTION
 SMALLEST RESPONSIBLE ACTION: Mark Phase 1 governed-learning foundation complete and route the sequencing clarification as C2.
@@ -64,13 +64,13 @@ DECISION
 KERNEL DECISION: PROCEED
 RATIONALE: Phase 1 governed-learning capability is now operational with documented closed-loop execution and governance routing.
 REQUIRED REVISIONS OR MISSING INFORMATION:
-- Founder review and decision on C2 proposal to amend sequencing language in QS-008.
+- Draft and present the exact QS-008 amendment diff under CP-2026-001 for Founder approval.
 RE-EVALUATION TRIGGERS:
-- C2 proposal approved/rejected.
+- Exact QS-008 amendment diff approved/rejected.
 - New pattern evidence from Bridge authorization reviews.
-REVIEW DATE OR CONDITION: Next review on completion of C2 founder decision.
+REVIEW DATE OR CONDITION: Next review on completion of exact QS-008 amendment Founder decision.
 
 APPROVAL
-HUMAN STEWARD DECISION: PENDING
-APPROVAL DATE: NOT APPLICABLE
-NOTES: This record is ready for Founder decision.
+HUMAN STEWARD DECISION: APPROVED
+APPROVAL DATE: 2026-08-09
+NOTES: Founder approved governed-learning Phase 1 closure and authorized CP-2026-001 for exact amendment drafting only. This record does not authorize Bridge build.
