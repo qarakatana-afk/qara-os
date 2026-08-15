@@ -87,7 +87,7 @@ This signal is noted here for pattern assessment under QS-012 but does not const
 ---
 
 NEXT REVIEW TRIGGER:
-- Founder approval of KDR-2026-004 and KDR-2026-005
+- KDR-2026-004 and KDR-2026-005 Founder approvals recorded on 2026-08-15 (trigger satisfied)
 - M2 completion, at which point OOR-2026-003 should be issued against KDR-2026-005
 
 ---
