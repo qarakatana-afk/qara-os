@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --warm-50: #fdf8f3;
+    --warm-100: #f9ede0;
+  }
+
+  html {
+    font-family:
+      "Georgia",
+      "Cambria",
+      "Times New Roman",
+      serif;
+  }
+
+  body {
+    background-color: var(--warm-50);
+    color: #292524; /* stone-800 */
+    min-height: 100vh;
+  }
+
+  /* Smooth focus rings */
+  *:focus-visible {
+    outline: 2px solid #c97e4a;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg
+      bg-warm-600 text-white font-sans font-medium text-sm
+      hover:bg-warm-700 active:bg-warm-800
+      transition-colors duration-150
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg
+      text-stone-500 font-sans font-medium text-sm
+      hover:text-stone-700 hover:bg-warm-100
+      transition-colors duration-150;
+  }
+
+  .input-text {
+    @apply w-full rounded-lg border border-warm-200 bg-white
+      px-4 py-3 font-sans text-sm text-stone-800
+      placeholder:text-stone-400
+      focus:border-warm-400 focus:ring-0 focus:outline-none
+      transition-colors duration-150;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-warm-100 p-6;
+  }
+
+  .page-container {
+    @apply max-w-2xl mx-auto px-4 py-8 sm:py-12;
+  }
+
+  .section-title {
+    @apply font-serif text-2xl font-normal text-stone-800 leading-snug;
+  }
+
+  .body-text {
+    @apply font-sans text-base text-stone-600 leading-relaxed;
+  }
+
+  .label-text {
+    @apply font-sans text-xs font-medium text-stone-400 uppercase tracking-wider;
+  }
+}
