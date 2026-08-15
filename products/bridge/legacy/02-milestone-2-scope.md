@@ -3,7 +3,7 @@
 **Module:** Bridge Legacy  
 **Date:** 2026-08-13  
 **Author:** Copilot Coding Agent (Qara OS AI) — subject to human review  
-**Status:** Draft — AWAITING FOUNDER REVIEW AND APPROVAL  
+**Status:** Active — Founder Approved (2026-08-15)  
 **Governing KDR:** KDR-2026-005 (`../../../records/kernel-decisions/2026-08-13_kdr-2026-005_bridge-legacy-m2-controlled-development.md`)
 
 ---
@@ -106,4 +106,4 @@ The following open decisions are specific to M2's actual requirements. These are
 - [x] Explicitly excluded features are listed
 - [x] External dependencies documented as known / unknown — not substituted from Bridge Translation
 - [x] Open decisions are Legacy-specific (not inherited)
-- [x] Status is draft awaiting Founder approval
+- [x] Status is active with Founder approval recorded

@@ -3,13 +3,13 @@
 **Date:** 2026-08-13  
 **Prepared by:** Copilot Coding Agent  
 **For:** Founder, Qara Labs (qarakatana-afk)  
-**Status:** AWAITING FOUNDER REVIEW AND DECISION
+**Status:** FOUNDER APPROVED — DECISIONS RECORDED (2026-08-15)
 
 ---
 
 ## How to use this packet
 
-Read each section. At the end (Section H), one decision is required. No implementation should begin until you have recorded that decision.
+Read each section. Section H records the Founder decisions now approved and activated.
 
 ---
 
@@ -161,7 +161,7 @@ The correct mechanism is not an exemption or bypass — it is the fresh Legacy-s
 
 **Source:** `records/kernel-decisions/2026-08-13_kdr-2026-005_bridge-legacy-m2-controlled-development.md`
 
-**Kernel verdict: PROCEED — conditional on Founder approval**
+**Kernel verdict: PROCEED — Founder approved; ACTIVE**
 
 | Test | Result |
 |---|---|
@@ -184,9 +184,9 @@ Production deployment · public launch · real personal data before deployment g
 
 ---
 
-## H. Exact Founder Decision Required
+## H. Founder Decision Record (Recorded)
 
-You are being asked to make **two decisions** in sequence. Both are required before M2 controlled development may proceed.
+The Founder made and recorded the following two decisions in sequence.
 
 ---
 
@@ -194,14 +194,11 @@ You are being asked to make **two decisions** in sequence. Both are required bef
 
 **Record:** `records/kernel-decisions/2026-08-13_kdr-2026-004_bridge-legacy-module-scoping.md`
 
-**You are deciding:** Whether to establish Bridge Legacy as an independently governed Bridge module, with the scope defined in `products/bridge/legacy/01-module-scope.md`, and to acknowledge the M1 historical reconciliation record (OOR-2026-002) as accurately representing what happened.
+**Founder decision:** APPROVED. Bridge Legacy is established as an independently governed Bridge module, with scope defined in `products/bridge/legacy/01-module-scope.md`; M1 historical reconciliation record (OOR-2026-002) is acknowledged as accurate.
 
 **This decision does NOT:** retroactively authorize M1; authorize M2; authorize production.
 
-**Options:**
-- **APPROVE** as drafted → mark KDR-2026-004 ACTIVE, proceed to Decision 2
-- **REVISE scope** → provide specific revisions to `products/bridge/legacy/01-module-scope.md`; a revised KDR-2026-004 will be issued
-- **HOLD** → state the specific condition that must be met before re-evaluation
+**Recorded effect:** KDR-2026-004 marked ACTIVE (approval date: 2026-08-15).
 
 ---
 
@@ -211,21 +208,17 @@ You are being asked to make **two decisions** in sequence. Both are required bef
 
 **Prerequisite:** Decision 1 must be APPROVED first.
 
-**You are deciding:** Whether to authorize Bridge Legacy Milestone 2 controlled development within the scope of `products/bridge/legacy/02-milestone-2-scope.md` (LM2-01 through LM2-09), in an isolated non-production environment, with no real personal data until deployment gates LOD-01 through LOD-03 are resolved.
+**Founder decision:** APPROVED. Bridge Legacy Milestone 2 controlled development is authorized within the scope of `products/bridge/legacy/02-milestone-2-scope.md` (LM2-01 through LM2-09), in an isolated non-production environment, with no real personal data until deployment gates LOD-01 through LOD-03 are resolved.
 
 **This decision does NOT:** authorize production; authorize public launch; authorize any M3+ capability; authorize use of real personal data before deployment gates are cleared.
 
-**Options:**
-- **APPROVE** as drafted → mark KDR-2026-005 ACTIVE; M2 controlled development may proceed
-- **REVISE scope** → provide specific revisions to `products/bridge/legacy/02-milestone-2-scope.md`; a revised KDR-2026-005 will be issued
-- **HOLD** → state the specific condition that must be met before re-evaluation
-- **REJECT** → state the specific reason; a new KDR will be required to re-propose
+**Recorded effect:** KDR-2026-005 marked ACTIVE (approval date: 2026-08-15); M2 controlled development may proceed within LM2-01 through LM2-09 only and stated exclusions/gates remain in force.
 
 ---
 
 *Packet prepared by Copilot Coding Agent operating under Qara OS governance.*  
-*No build or implementation work has been authorized by the preparation of this packet.*  
-*Both decisions require Founder record before any M2 work proceeds.*
+*No build or implementation work is authorized by packet preparation alone.*  
+*Founder approvals have now been recorded in KDR-2026-004 and KDR-2026-005.*
 
 **Documents created in this session:**
 - `products/bridge/legacy/01-module-scope.md`

@@ -2,12 +2,12 @@ KERNEL DECISION RECORD
 
 RECORD ID: KDR-2026-004
 DATE: 2026-08-13
-VERSION: 1
+VERSION: 2
 
 WORK
 TITLE: Bridge Legacy module scoping — establish as independently governed Bridge module
 CLASSIFICATION: System Specification
-STATUS: DRAFT — AWAITING FOUNDER APPROVAL
+STATUS: ACTIVE — FOUNDER APPROVED
 
 RESPONSIBILITY
 RESPONSIBLE HUMAN STEWARD: qarakatana-afk
@@ -42,7 +42,7 @@ FACTS:
 - KDR-2026-002 places Bridge build authorization on HOLD pending Phase 1 governed-learning closure. Phase 1 is now closed per KDR-2026-003.
 - KDR-2026-002 was issued to govern Bridge Translation's build authorization gate. Its scope is the Bridge build process generally, not specifically Legacy's internal controlled development.
 ASSUMPTIONS:
-- Bridge Legacy's purpose, scope, and exclusions as stated in products/bridge/legacy/01-module-scope.md accurately represent the Founder's intent. REQUIRES FOUNDER CONFIRMATION.
+- Bridge Legacy's purpose, scope, and exclusions as stated in products/bridge/legacy/01-module-scope.md represent the Founder's approved intent.
 - M1 validation evidence (10/10 pass) is accurate as reported; the Replit project constitutes the implementation artifact. No independent verification exists in this repository.
 - Bridge Legacy does not require Bridge Translation to function and does not share Bridge Translation's architecture dependencies unless explicitly cited.
 UNCERTAINTIES:
@@ -80,17 +80,16 @@ PROHIBITED OR EXCLUDED ACTIONS:
 - Expanding Legacy scope beyond products/bridge/legacy/01-module-scope.md section 3 without a new Kernel Decision.
 
 DECISION
-KERNEL DECISION: PROCEED (establishing module scope and governance) — DRAFT; requires Founder approval
+KERNEL DECISION: PROCEED (establishing module scope and governance) — ACTIVE
 RATIONALE: Bridge Legacy has a demonstrable implementation record (M1, 10/10 pass) and an actively developing Milestone 2. The governance gap is the absence of a module scoping record, not the absence of work. Establishing that record now is the minimum action that makes continued governance possible. The governed-learning loop (KDR-2026-002 → OOR-2026-001 → KDR-2026-003) is complete. The conditions that warranted the Bridge-wide HOLD have been resolved. A Legacy-specific scoping decision is the correct next step.
 REQUIRED REVISIONS OR MISSING INFORMATION:
-- Founder confirmation of Bridge Legacy module scope (products/bridge/legacy/01-module-scope.md)
-- Founder acknowledgment of M1 historical reconciliation (records/operational-outcomes/2026-08-13_oor-2026-002_legacy-m1-reconciliation.md)
+- None at activation. Founder approved module scope and acknowledged M1 historical reconciliation.
 RE-EVALUATION TRIGGERS:
-- Founder approves or revises module scope
+- Founder revises module scope
 - New evidence changes the M1 historical record
 REVIEW DATE OR CONDITION: Review immediately upon Founder approval or revision of module scope.
 
 APPROVAL
-HUMAN STEWARD DECISION: PENDING
-APPROVAL DATE:
-NOTES: Drafted by Copilot Coding Agent. Awaiting Founder review of Bridge Legacy module scope and M1 reconciliation record before this decision may be marked ACTIVE.
+HUMAN STEWARD DECISION: APPROVED
+APPROVAL DATE: 2026-08-15
+NOTES: Founder confirmed Bridge Legacy module scope and acknowledged M1 historical reconciliation as accurately recorded. This activation establishes Bridge Legacy as independently governed and does not retroactively authorize M1 or authorize M2 implementation.

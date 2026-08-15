@@ -2,12 +2,12 @@ KERNEL DECISION RECORD
 
 RECORD ID: KDR-2026-005
 DATE: 2026-08-13
-VERSION: 1
+VERSION: 2
 
 WORK
 TITLE: Bridge Legacy Milestone 2 controlled development authorization
 CLASSIFICATION: Implementation
-STATUS: DRAFT — AWAITING FOUNDER APPROVAL
+STATUS: ACTIVE — FOUNDER APPROVED
 
 RESPONSIBILITY
 RESPONSIBLE HUMAN STEWARD: qarakatana-afk
@@ -45,7 +45,7 @@ FACTS:
 - KDR-2026-002 did not enumerate Bridge Legacy controlled development (a separately scoped module with no implementation at the time) as a specifically prohibited action. Its prohibited action was: "Declaring build authorization complete without Phase 1 closure evidence."
 
 ASSUMPTIONS:
-- Founder approval of KDR-2026-004 (Legacy module scoping) is a prerequisite for this decision. This KDR is drafted in sequence but requires KDR-2026-004 to be approved first. REQUIRES FOUNDER ACTION.
+- Founder approval of KDR-2026-004 (Legacy module scoping) is a prerequisite for this decision. This prerequisite has been met.
 - M1 validation evidence (10/10 pass) is accurate as reported. No independent repository artifact exists; the Replit project is the implementation source.
 - M2 controlled development proceeds in an environment where no real user personal data is processed until LOD-01 through LOD-03 (AI provider DPA, Clerk DPA, database encryption confirmation) are resolved.
 - The Founder's definition of "controlled development" is: development activity by the authorized builder (Founder and/or designated agent), in a non-production environment, with no deployment to public users, no real personal data beyond developer testing.
@@ -71,9 +71,9 @@ TRUST TEST: A fully informed reviewer can trace: M1 validated → Legacy module 
 CAPABILITY EFFECT: Enables Bridge Legacy M2 controlled development within the explicitly bounded scope. Does not enable production, public launch, or any other Bridge module.
 
 EVIDENCE NEEDED:
-- Founder approval of KDR-2026-004 (prerequisite)
-- Founder confirmation of M2 scope as stated in products/bridge/legacy/02-milestone-2-scope.md
-- Founder acknowledgment that M2 controlled development is in an isolated environment (no real personal data until LOD-01 through LOD-03 are resolved)
+- Founder approval of KDR-2026-004 (prerequisite) — SATISFIED
+- Founder approval of M2 controlled development scope as stated in products/bridge/legacy/02-milestone-2-scope.md — SATISFIED
+- Founder acknowledgment that M2 controlled development is in an isolated environment (no real personal data until LOD-01 through LOD-03 are resolved) — SATISFIED
 - Upon M2 completion: Operational Outcome Record (OOR-2026-003) against this KDR
 
 PROPOSED ACTION
@@ -98,21 +98,20 @@ PROHIBITED OR EXCLUDED ACTIONS:
 - Using this record to claim production authorization
 
 DECISION
-KERNEL DECISION: PROCEED (controlled development within stated scope and gates) — DRAFT; requires Founder approval
+KERNEL DECISION: PROCEED (controlled development within stated scope and gates) — ACTIVE
 RATIONALE:
 1. M1 foundation is validated (OOR-2026-002: 10/10 pass).
-2. Legacy module scope is established (KDR-2026-004, pending Founder approval).
+2. Legacy module scope is established (KDR-2026-004, Founder approved).
 3. M2 requirements are defined, bounded, and testable (products/bridge/legacy/02-milestone-2-scope.md).
 4. Phase 1 governed-learning is complete (KDR-2026-003); the conditions that warranted KDR-2026-002's HOLD have been met.
 5. M2 controlled development is not production launch; it is the correct next governed step.
 6. Privacy risks for controlled development (no real personal data) are manageable within the stated scope; deployment gates address the remaining privacy unknowns before any real-data exposure.
 
 REQUIRED REVISIONS OR MISSING INFORMATION:
-- Founder approval of KDR-2026-004 (prerequisite)
-- Founder confirmation of M2 scope in products/bridge/legacy/02-milestone-2-scope.md
+- None at activation. Founder approved prerequisite module scope and M2 controlled-development scope.
 
 RE-EVALUATION TRIGGERS:
-- Founder approval or revision of this record
+- Founder revision of this record
 - M2 completion, triggering OOR-2026-003
 - Any discovery during M2 that a requirement changes in purpose, scope, risk, or served group
 - Any decision to proceed to real-data deployment (triggers deployment gate review)
@@ -120,6 +119,6 @@ RE-EVALUATION TRIGGERS:
 REVIEW DATE OR CONDITION: Re-evaluate upon M2 completion or upon any request to expand scope.
 
 APPROVAL
-HUMAN STEWARD DECISION: PENDING
-APPROVAL DATE:
-NOTES: Drafted by Copilot Coding Agent. Requires KDR-2026-004 Founder approval as a prerequisite. Awaiting Founder review of the complete Legacy governance reconciliation package before this decision may be marked ACTIVE.
+HUMAN STEWARD DECISION: APPROVED
+APPROVAL DATE: 2026-08-15
+NOTES: Founder approved Bridge Legacy Milestone 2 controlled development within LM2-01 through LM2-09 and the stated deployment gates. This does not authorize production deployment, public launch, real-user deployment before applicable gates are cleared, Bridge Translation, voice/STT, other Bridge modules, or Milestone 3+.

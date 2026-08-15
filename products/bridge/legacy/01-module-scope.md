@@ -3,7 +3,7 @@
 **Module:** Bridge Legacy  
 **Date:** 2026-08-13  
 **Author:** Copilot Coding Agent (Qara OS AI) — subject to human review  
-**Status:** Draft — AWAITING FOUNDER REVIEW AND APPROVAL  
+**Status:** Active — Founder Approved (2026-08-15)  
 **Governing KDR:** KDR-2026-004 (`../../../records/kernel-decisions/2026-08-13_kdr-2026-004_bridge-legacy-module-scoping.md`)
 
 ---
@@ -40,14 +40,14 @@ The following capabilities constitute the authorized scope of Bridge Legacy as o
 | Leave and return (session continuity) | M1 | Validated externally (see OOR-2026-002) |
 | Approved product positioning | M1 | Validated externally (see OOR-2026-002) |
 | Scope control (no unauthorized features) | M1 | Validated externally (see OOR-2026-002) |
-| Server-side AI conversational follow-ups | M2 | Proposed — not yet authorized |
-| Grounded one-question-at-a-time exploration | M2 | Proposed — not yet authorized |
-| Multi-turn conversation sessions | M2 | Proposed — not yet authorized |
-| Skip / change-subject / end / return controls | M2 | Proposed — not yet authorized |
-| Conversation memory without inference-as-fact | M2 | Proposed — not yet authorized |
-| Structured signals linked to source entries | M2 | Proposed — not yet authorized |
-| Response-first persistence (AI failure recovery) | M2 | Proposed — not yet authorized |
-| Minimal necessary data-model extensions | M2 | Proposed — not yet authorized |
+| Server-side AI conversational follow-ups | M2 | Authorized for controlled development (KDR-2026-005) |
+| Grounded one-question-at-a-time exploration | M2 | Authorized for controlled development (KDR-2026-005) |
+| Multi-turn conversation sessions | M2 | Authorized for controlled development (KDR-2026-005) |
+| Skip / change-subject / end / return controls | M2 | Authorized for controlled development (KDR-2026-005) |
+| Conversation memory without inference-as-fact | M2 | Authorized for controlled development (KDR-2026-005) |
+| Structured signals linked to source entries | M2 | Authorized for controlled development (KDR-2026-005) |
+| Response-first persistence (AI failure recovery) | M2 | Authorized for controlled development (KDR-2026-005) |
+| Minimal necessary data-model extensions | M2 | Authorized for controlled development (KDR-2026-005) |
 
 ---
 
@@ -98,7 +98,7 @@ Dependencies for the actual current implementation are documented in `02-milesto
 | Identity | `QS-003_Art_of_Presence_v0.1.md` |
 | Kernel | `docs/kernel/07-Kernel.md` (v0.2) |
 | Legacy scoping | `records/kernel-decisions/2026-08-13_kdr-2026-004_bridge-legacy-module-scoping.md` |
-| Legacy M2 authorization | `records/kernel-decisions/2026-08-13_kdr-2026-005_bridge-legacy-m2-controlled-development.md` (pending Founder approval) |
+| Legacy M2 authorization | `records/kernel-decisions/2026-08-13_kdr-2026-005_bridge-legacy-m2-controlled-development.md` (ACTIVE) |
 | This document | `products/bridge/legacy/01-module-scope.md` |
 
 ---
@@ -127,4 +127,4 @@ and explicit Founder approval before implementation begins.
 - [x] Out-of-scope list is explicit
 - [x] AI behavior constraints are stated
 - [x] Controlling authority hierarchy is cited
-- [x] Status is draft awaiting Founder approval
+- [x] Status is active with Founder approval recorded
