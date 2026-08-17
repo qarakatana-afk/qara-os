@@ -4,7 +4,11 @@
 
 import OpenAI from "openai";
 
-const MODEL = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
+// Using OpenRouter (OpenAI-compatible API) with a free model, since the
+// configured key is an OpenRouter key (starts with sk-or-). If you later
+// switch to a real OpenAI key (starts with sk-proj- or sk-), just remove
+// the baseURL line below and change the default model.
+const MODEL = process.env.OPENAI_MODEL ?? "meta-llama/llama-3.3-70b-instruct:free";
 
 // Lazy client initialization — prevents build-time env var errors.
 // Only called at runtime when an AI request is actually made.
@@ -15,7 +19,10 @@ function getClient(): OpenAI {
       "OPENAI_API_KEY is not configured. Set it in .env.local before using AI features."
     );
   }
-  return new OpenAI({ apiKey });
+  return new OpenAI({
+    apiKey,
+    baseURL: "https://openrouter.ai/api/v1",
+  });
 }
 
 // The system prompt defines the AI persona for Bridge Legacy.
