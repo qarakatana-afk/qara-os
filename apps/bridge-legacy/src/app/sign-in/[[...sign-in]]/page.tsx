@@ -8,7 +8,7 @@ export default function SignInPage() {
           Bridge Legacy
         </h1>
         <p className="font-sans text-stone-500 text-sm">
-          Your life is interesting now.
+          Stories, recipes, and wisdom — kept for the people you love.
         </p>
       </div>
       <SignIn />
