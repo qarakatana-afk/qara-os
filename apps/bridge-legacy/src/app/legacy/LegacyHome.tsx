@@ -26,28 +26,31 @@ export default function LegacyHome({ entryCount }: LegacyHomeProps) {
           <>
             <div className="mb-10">
               <h2 className="font-serif text-3xl sm:text-4xl text-stone-800 leading-tight mb-5">
-                Your life is interesting now.
+                Something to leave behind, made while you&apos;re still here to shape it.
               </h2>
               <p className="body-text max-w-md mx-auto mb-3">
-                Bridge Legacy is a living celebration of your stories, passions,
-                memories, and wisdom — as your life is being lived.
+                Bridge Legacy is where your stories, recipes, letters, and
+                hard-won wisdom become something the people you love can
+                actually hold onto.
               </p>
               <p className="body-text max-w-md mx-auto mb-3">
-                Not a biography. Not a memorial. A place for the things you know
-                and love right now.
+                Not a biography of a life that&apos;s over. A living collection
+                of a life being lived — added to whenever you want, for as
+                long as you want.
               </p>
               <p className="body-text max-w-md mx-auto">
-                Your recipes. Your humor. Your hard-won lessons. The people who
-                shaped you. The dreams you&apos;re still chasing.
+                This isn&apos;t just for later in life. It&apos;s for any age,
+                any story worth keeping — the wisdom you&apos;ve already
+                earned, right now.
               </p>
             </div>
 
             <div className="space-y-3 mb-8 text-left max-w-sm mx-auto">
               {[
-                "Your stories are worth hearing",
-                "What you know matters",
-                "What you love matters",
-                "You are still becoming",
+                "Your recipes and traditions",
+                "Letters for the people you love",
+                "The lessons that took you years to learn",
+                "The stories only you can tell",
               ].map((line) => (
                 <div key={line} className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-warm-400 flex-shrink-0" />
