@@ -24,8 +24,29 @@ type ConversationState =
   | "ended"
   | "error";
 
-const OPENING_PROMPT =
-  "What's something you've been thinking about lately — something you know, love, or just can't stop talking about?";
+// A curated set of varied opening-style questions, used whenever we need a
+// fresh starting point (first visit, skip, or change subject) without
+// depending on an AI call. This keeps skip/change-subject fast, free, and
+// reliable even if the AI provider is rate-limited or unavailable.
+const VARIED_PROMPTS = [
+  "What's something you've been thinking about lately — something you know, love, or just can't stop talking about?",
+  "Tell me about someone who shaped who you are.",
+  "What's a skill or piece of knowledge you're proud you picked up along the way?",
+  "Is there a recipe, tradition, or ritual that means something to you?",
+  "What's a moment you'd want someone to know about, even if it seems small?",
+  "What's some advice you wish someone had given you sooner?",
+  "Tell me about a place that means something to you.",
+  "What's something you know to be true that took you a long time to learn?",
+  "What's a story you've told so many times it's become part of who you are?",
+  "Is there something you're proud of that no one ever gave you credit for?",
+];
+
+function getRandomPrompt(exclude?: string): string {
+  const options = exclude
+    ? VARIED_PROMPTS.filter((p) => p !== exclude)
+    : VARIED_PROMPTS;
+  return options[Math.floor(Math.random() * options.length)];
+}
 
 export default function ConversationView() {
   const [state, setState] = useState<ConversationState>("loading");
@@ -38,9 +59,41 @@ export default function ConversationView() {
     null
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // Transient, non-blocking notice (e.g. "couldn't load a new question").
+  // Unlike `error` state, this does NOT hide the input area.
+  const [notice, setNotice] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Initialize: get or create conversation and load entries
+  function showNotice(message: string) {
+    setNotice(message);
+    setTimeout(() => setNotice(null), 4000);
+  }
+
+  // Save a new "ai" role entry directly (used for skip / change subject / the
+  // very first question) without depending on an AI call. Returns the saved
+  // entry, or null on failure.
+  async function postFreshQuestion(
+    sessionId: string,
+    promptText: string
+  ): Promise<Entry | null> {
+    try {
+      const res = await fetch("/api/entries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: promptText,
+          sessionId,
+          role: "ai",
+        }),
+      });
+      if (!res.ok) return null;
+      const { entry } = await res.json();
+      return entry;
+    } catch {
+      return null;
+    }
+  }
+
   useEffect(() => {
     async function init() {
       try {
@@ -50,10 +103,7 @@ export default function ConversationView() {
         setConversation(conv);
 
         if (conv.status === "ended") {
-          // Load past entries for display but don't allow new input
-          const entriesRes = await fetch(
-            `/api/entries?sessionId=${conv.id}`
-          );
+          const entriesRes = await fetch(`/api/entries?sessionId=${conv.id}`);
           if (entriesRes.ok) {
             const { entries: loaded } = await entriesRes.json();
             setEntries(loaded);
@@ -62,7 +112,6 @@ export default function ConversationView() {
           return;
         }
 
-        // Load existing entries for this session
         const entriesRes = await fetch(`/api/entries?sessionId=${conv.id}`);
         let loaded: Entry[] = [];
         if (entriesRes.ok) {
@@ -71,7 +120,6 @@ export default function ConversationView() {
           setEntries(loaded);
         }
 
-        // If the last entry is an owner entry, auto-generate a follow-up
         const visibleEntries = loaded.filter(
           (e) => !e.content.startsWith("[owner skipped")
         );
@@ -80,8 +128,22 @@ export default function ConversationView() {
             ? visibleEntries[visibleEntries.length - 1]
             : null;
 
-        if (lastEntry && lastEntry.role === "owner") {
-          // Need to generate a follow-up for this entry
+        if (!lastEntry) {
+          setState("generating_ai");
+          const firstQuestion = await postFreshQuestion(
+            conv.id,
+            getRandomPrompt()
+          );
+          if (firstQuestion) {
+            setEntries((prev) => [...prev, firstQuestion]);
+          } else {
+            showNotice("Couldn't load your first question — please try again.");
+          }
+          setState("awaiting_input");
+          return;
+        }
+
+        if (lastEntry.role === "owner") {
           setState("generating_ai");
           try {
             const aiRes = await fetch("/api/ai/followup", {
@@ -95,9 +157,15 @@ export default function ConversationView() {
             if (aiRes.ok) {
               const aiData = await aiRes.json();
               setEntries((prev) => [...prev, aiData.aiEntry]);
+            } else {
+              const fallback = await postFreshQuestion(
+                conv.id,
+                getRandomPrompt()
+              );
+              if (fallback) setEntries((prev) => [...prev, fallback]);
             }
           } catch {
-            // Non-fatal — just proceed to awaiting_input
+            // Non-fatal — proceed to awaiting_input either way
           }
           setState("awaiting_input");
           return;
@@ -112,7 +180,6 @@ export default function ConversationView() {
     init();
   }, []);
 
-  // Scroll to bottom when entries change
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [entries, state]);
@@ -124,7 +191,6 @@ export default function ConversationView() {
     setState("saving");
     setInputText("");
 
-    // Step 1: Save the owner's response BEFORE calling AI (LM2-06)
     let savedEntry: Entry;
     try {
       const saveRes = await fetch("/api/entries", {
@@ -140,19 +206,15 @@ export default function ConversationView() {
       const { entry } = await saveRes.json();
       savedEntry = entry;
 
-      // Immediately show the owner's entry in the UI
       setEntries((prev) => [...prev, savedEntry]);
       setPendingSavedEntryId(savedEntry.id);
     } catch {
       setState("error");
-      setErrorMessage(
-        "Your response couldn't be saved. Please try again."
-      );
-      setInputText(text); // Restore input so owner can retry
+      setErrorMessage("Your response couldn't be saved. Please try again.");
+      setInputText(text);
       return;
     }
 
-    // Step 2: Call AI for follow-up (LM2-06 compliant — entry already saved)
     setState("generating_ai");
     try {
       const aiRes = await fetch("/api/ai/followup", {
@@ -168,7 +230,6 @@ export default function ConversationView() {
 
       if (!aiRes.ok) {
         if (aiData.recoverable) {
-          // AI failure — owner's data is safe, offer retry
           setState("ai_failed");
           setPendingSavedEntryId(savedEntry.id);
           return;
@@ -217,50 +278,34 @@ export default function ConversationView() {
     if (!conversation) return;
     setState("generating_ai");
 
-    // Generate a new AI question without a new owner entry
-    // We pass the existing conversation context to get a different thread
-    try {
-      // Save a "skip" signal as an implicit entry (not displayed)
-      const skipRes = await fetch("/api/entries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: "[owner skipped this question]",
-          sessionId: conversation.id,
-          role: "owner",
-        }),
-      });
-      if (!skipRes.ok) throw new Error();
-      const { entry: skipEntry } = await skipRes.json();
+    fetch("/api/entries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: "[owner skipped this question]",
+        sessionId: conversation.id,
+        role: "owner",
+      }),
+    }).catch(() => {
+      // Non-fatal — the skip itself should still proceed
+    });
 
-      // Ask AI for a new question, treating the skip as a signal to move on
-      const aiRes = await fetch("/api/ai/followup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          savedEntryId: skipEntry.id,
-          conversationId: conversation.id,
-        }),
-      });
+    const lastAiText = [...entries].reverse().find((e) => e.role === "ai")
+      ?.content;
+    const nextPrompt = getRandomPrompt(lastAiText);
+    const fresh = await postFreshQuestion(conversation.id, nextPrompt);
 
-      if (!aiRes.ok) {
-        setState("awaiting_input");
-        return;
-      }
-
-      const aiData = await aiRes.json();
-      setEntries((prev) => [...prev, aiData.aiEntry]);
-      setState("awaiting_input");
-    } catch {
-      setState("awaiting_input");
+    if (fresh) {
+      setEntries((prev) => [...prev, fresh]);
+    } else {
+      showNotice("Couldn't load a new question — please try again.");
     }
+    setState("awaiting_input");
   }
 
   async function handleChangeSubject() {
     if (!conversation) return;
 
-    // Start a new conversation session (LM2-04)
-    // Existing data is preserved — this creates a fresh session, not a deletion
     setState("loading");
     try {
       const res = await fetch("/api/conversation", {
@@ -272,6 +317,14 @@ export default function ConversationView() {
       const { conversation: newConv } = await res.json();
       setConversation(newConv);
       setEntries([]);
+
+      setState("generating_ai");
+      const fresh = await postFreshQuestion(newConv.id, getRandomPrompt());
+      if (fresh) {
+        setEntries([fresh]);
+      } else {
+        showNotice("Couldn't load a new topic — please try again.");
+      }
       setState("awaiting_input");
     } catch {
       setState("error");
@@ -282,7 +335,6 @@ export default function ConversationView() {
   async function handleEnd() {
     if (!conversation) return;
 
-    // Pause the conversation so the owner can return to it later (LM2-04)
     try {
       await fetch("/api/conversation", {
         method: "POST",
@@ -306,7 +358,6 @@ export default function ConversationView() {
 
   return (
     <div className="flex flex-col flex-1 bg-warm-50">
-      {/* Conversation transcript */}
       <div className="flex-1 page-container pb-4">
         {state === "loading" && (
           <div className="text-center py-20 text-stone-400 font-sans text-sm">
@@ -320,7 +371,6 @@ export default function ConversationView() {
           </div>
         )}
 
-        {/* Past entries */}
         {entries.length > 0 && (
           <div className="space-y-6 mb-8">
             {entries
@@ -353,43 +403,33 @@ export default function ConversationView() {
           </div>
         )}
 
-        {/* Current prompt — shown when awaiting input */}
-        {(state === "awaiting_input" || state === "ai_failed") && (
-          <div className="mb-8">
-            {state === "ai_failed" && (
-              <div className="card border-amber-100 bg-amber-50 mb-4">
-                <p className="font-sans text-sm text-amber-800">
-                  The follow-up couldn&apos;t be generated right now — but your
-                  response has been saved.
-                </p>
-                <button
-                  onClick={handleRetryAI}
-                  className="btn-ghost mt-2 text-amber-700"
-                >
-                  Try again
-                </button>
-              </div>
-            )}
-
-            {entries.length === 0 && state !== "ai_failed" && (
-              <div className="mb-8">
-                <p className="label-text mb-3">A place for your stories</p>
-                <p className="font-serif text-xl text-stone-700 leading-relaxed">
-                  {OPENING_PROMPT}
-                </p>
-              </div>
-            )}
+        {state === "ai_failed" && (
+          <div className="card border-amber-100 bg-amber-50 mb-4">
+            <p className="font-sans text-sm text-amber-800">
+              The follow-up couldn&apos;t be generated right now — but your
+              response has been saved.
+            </p>
+            <button
+              onClick={handleRetryAI}
+              className="btn-ghost mt-2 text-amber-700"
+            >
+              Try again
+            </button>
           </div>
         )}
 
-        {/* Loading state: AI generating */}
+        {notice && (
+          <div className="card border-amber-100 bg-amber-50 mb-4">
+            <p className="font-sans text-sm text-amber-800">{notice}</p>
+          </div>
+        )}
+
         {state === "generating_ai" && (
           <div className="mb-8 text-stone-400 font-sans text-sm animate-pulse">
             — thinking —
           </div>
         )}
 
-        {/* Ended state */}
         {state === "ended" && (
           <div className="card text-center">
             <p className="font-serif text-xl text-stone-700 mb-2">
@@ -404,7 +444,6 @@ export default function ConversationView() {
         <div ref={bottomRef} />
       </div>
 
-      {/* Input area — fixed at bottom */}
       {state !== "ended" && state !== "loading" && state !== "error" && (
         <div className="border-t border-warm-100 bg-warm-50/80 backdrop-blur-sm">
           <div className="max-w-2xl mx-auto px-4 py-4">
@@ -436,7 +475,6 @@ export default function ConversationView() {
               </button>
             </div>
 
-            {/* Owner controls — LM2-04 */}
             <div className="flex gap-2 mt-3 flex-wrap">
               <button
                 onClick={handleSkip}
@@ -464,7 +502,6 @@ export default function ConversationView() {
         </div>
       )}
 
-      {/* Return button when ended */}
       {state === "ended" && (
         <div className="border-t border-warm-100 bg-warm-50/80">
           <div className="max-w-2xl mx-auto px-4 py-4 flex justify-center gap-4">
@@ -473,7 +510,6 @@ export default function ConversationView() {
                 setEntries([]);
                 setConversation(null);
                 setState("loading");
-                // Re-initialize to get or create a new session
                 window.location.reload();
               }}
               className="btn-primary"
