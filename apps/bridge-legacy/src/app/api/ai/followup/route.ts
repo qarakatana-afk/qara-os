@@ -16,6 +16,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { generateFollowUp, extractSignals } from "@/lib/ai";
+import { getPreset } from "@/lib/projectTypes";
 
 // Number of recent turns to include as conversation context (LM2-07)
 const CONTEXT_TURNS = 10;
@@ -63,25 +64,40 @@ export async function POST(req: NextRequest) {
 
   // Step 3: Fetch recent conversation context (LM2-07 — session memory)
   // We include only source content, not AI speculation or inferences.
-  const recentEntries = await prisma.entry.findMany({
+  // Ordered descending (most recent first) so `take` grabs the latest
+  // turns, then reversed back to chronological order for the AI.
+  const recentEntriesDesc = await prisma.entry.findMany({
     where: {
       sessionId: conversationId,
       ownerId: userId,
     },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
     take: CONTEXT_TURNS,
   });
+  const recentEntries = recentEntriesDesc.reverse();
 
   // Map to the ConversationTurn format expected by the AI library
-  const turns = recentEntries.map((e) => ({
+  const turns = recentEntries.map((e: (typeof recentEntries)[number]) => ({
     role: e.role as "owner" | "ai",
     content: e.content,
   }));
 
+  // Step 3b: Look up what the owner is making, so the AI can tailor its
+  // question instead of asking something generic.
+  const legacy = await prisma.legacy.findUnique({
+    where: { id: savedEntry.legacyId },
+  });
+  const projectDescription =
+    legacy?.projectType === "custom" && legacy.projectDetail
+      ? legacy.projectDetail
+      : legacy?.projectType
+        ? getPreset(legacy.projectType)?.aiDescription
+        : undefined;
+
   // Step 4: Generate the AI follow-up (this is where failures may occur)
   let followUpText: string;
   try {
-    followUpText = await generateFollowUp(turns);
+    followUpText = await generateFollowUp(turns, projectDescription);
   } catch (aiError) {
     // AI failure is non-fatal. The owner's entry is already saved.
     // Return a recoverable error state so the client can retry.
