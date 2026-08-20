@@ -12,10 +12,11 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { content, sessionId, role } = body as {
+  const { content, sessionId, role, audioUrl } = body as {
     content: string;
     sessionId?: string;
     role?: string;
+    audioUrl?: string;
   };
 
   if (!content || typeof content !== "string" || content.trim().length === 0) {
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
       sessionId: sessionId ?? null,
       role: role ?? "owner",
       content: content.trim(),
+      audioUrl: audioUrl ?? null,
     },
   });
 
