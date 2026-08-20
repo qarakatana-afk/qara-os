@@ -2,11 +2,20 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { prisma } from "@/lib/db";
 import ConversationView from "@/components/ConversationView";
 
 export default async function ConversationPage() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
+
+  const legacy = await prisma.legacy.findUnique({
+    where: { ownerId: userId },
+  });
+
+  // Shouldn't happen in normal flow (project selection happens on /legacy
+  // first), but guard against it rather than starting an untailored session.
+  if (!legacy?.projectType) redirect("/legacy/project");
 
   return (
     <div className="min-h-screen bg-warm-50 flex flex-col">
@@ -25,7 +34,7 @@ export default async function ConversationPage() {
 
       {/* Conversation area — fills remaining space */}
       <div className="flex-1 flex flex-col">
-        <ConversationView />
+        <ConversationView projectType={legacy.projectType} />
       </div>
     </div>
   );
