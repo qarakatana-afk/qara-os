@@ -96,16 +96,26 @@ export default function LegacyHome({
               </h2>
               <p className="body-text max-w-sm mx-auto">
                 Your Legacy has{" "}
-                <span className="text-stone-700 font-medium">{entryCount}</span>{" "}
-                {entryCount === 1 ? "entry" : "entries"} so far.
+                <Link
+                  href="/legacy/entries"
+                  className="text-stone-700 font-medium underline decoration-warm-300 hover:decoration-warm-500"
+                >
+                  {entryCount} {entryCount === 1 ? "entry" : "entries"}
+                </Link>{" "}
+                so far.
                 <br />
                 Every one of them is yours.
               </p>
             </div>
 
-            <Link href="/legacy/conversation" className="btn-primary text-base">
-              Continue your Legacy
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/legacy/conversation" className="btn-primary text-base">
+                Continue your Legacy
+              </Link>
+              <Link href="/legacy/entries" className="btn-ghost text-base">
+                View your entries
+              </Link>
+            </div>
           </>
         )}
       </main>
