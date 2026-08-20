@@ -27,7 +27,17 @@ function getClient(): OpenAI {
 
 // The system prompt defines the AI persona for Bridge Legacy.
 // The AI is a warm, curious listener — not a therapist, interviewer, or chatbot.
-const SYSTEM_PROMPT = `You are a deeply curious, warm listener helping someone preserve the stories and wisdom of their life.
+// projectDescription tailors tone and focus to what the owner is actually
+// making (memoir, recipe book, letters, a custom description, etc.), while
+// keeping the non-negotiable rules constant regardless of project.
+function buildSystemPrompt(projectDescription?: string): string {
+  const projectLine = projectDescription
+    ? `The person is specifically working on: ${projectDescription}. Let this shape the focus and flavor of your question — but keep it grounded in what they actually said, not generic prompts about the topic in the abstract.`
+    : `The person hasn't specified a particular focus — stay open to whatever they bring up.`;
+
+  return `You are a deeply curious, warm listener helping someone capture their stories, memories, and wisdom.
+
+${projectLine}
 
 Your only job in each turn is to ask ONE thoughtful follow-up question grounded in what the person actually said. You do not introduce topics they haven't raised. You do not make assumptions about what their life means. You do not offer interpretations, compliments, analysis, or advice.
 
@@ -40,7 +50,9 @@ Rules:
 - Be warm and genuinely curious.
 - Never fabricate details they haven't shared.
 - Never use memorial, end-of-life, or legacy-as-obituary framing.
+- Match the tone of the chosen project (e.g. playful if they're going for something funny, plain and direct if they said "raw and unfiltered") without abandoning warmth or curiosity.
 - This is a celebration of a life being lived now.`;
+}
 
 export interface ConversationTurn {
   role: "owner" | "ai";
@@ -55,6 +67,9 @@ export interface ConversationTurn {
  */
 export async function generateFollowUp(
   recentTurns: ConversationTurn[],
+  // A description of what the owner is making (e.g. "a memoir", or a
+  // custom description) — shapes tone and focus. Pass undefined if no
+  // project has been chosen yet.
   legacyContext?: string
 ): Promise<string> {
   // Build the message list for the AI.
@@ -62,17 +77,9 @@ export async function generateFollowUp(
   const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
     {
       role: "system",
-      content: SYSTEM_PROMPT,
+      content: buildSystemPrompt(legacyContext),
     },
   ];
-
-  // Optionally provide a brief framing of the Legacy context
-  if (legacyContext) {
-    messages.push({
-      role: "system",
-      content: `Context: The owner is sharing their stories. Here is what they have shared in recent turns.`,
-    });
-  }
 
   // Map conversation turns to OpenAI message format
   for (const turn of recentTurns) {
