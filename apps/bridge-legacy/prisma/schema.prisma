@@ -14,10 +14,17 @@ datasource db {
 // A Legacy belongs to exactly one authenticated owner.
 // Every owner can have exactly one Legacy (enforced by @unique on ownerId).
 model Legacy {
-  id        String   @id @default(cuid())
-  ownerId   String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  ownerId       String   @unique
+  // What the owner is actually making (memoir, recipe book, letters, etc.)
+  // projectType holds a preset id, or "custom". projectDetail holds the
+  // owner's own free-text description when projectType is "custom", or a
+  // short refinement note for a preset. Both are optional — null means the
+  // owner hasn't chosen yet, and the app should prompt them to choose.
+  projectType   String?
+  projectDetail String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   conversations Conversation[]
   entries       Entry[]
