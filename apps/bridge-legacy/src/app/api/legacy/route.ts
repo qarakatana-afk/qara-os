@@ -3,7 +3,7 @@
 // Every Legacy belongs to exactly one authenticated owner.
 
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
 export async function GET() {
@@ -17,6 +17,42 @@ export async function GET() {
     where: { ownerId: userId },
     create: { ownerId: userId },
     update: {},
+  });
+
+  return NextResponse.json({ legacy });
+}
+
+// PATCH /api/legacy — update the owner's chosen project (what they're making)
+export async function PATCH(req: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await req.json();
+  const { projectType, projectDetail } = body as {
+    projectType?: string;
+    projectDetail?: string;
+  };
+
+  if (!projectType || typeof projectType !== "string") {
+    return NextResponse.json(
+      { error: "projectType is required" },
+      { status: 400 }
+    );
+  }
+
+  const legacy = await prisma.legacy.upsert({
+    where: { ownerId: userId },
+    create: {
+      ownerId: userId,
+      projectType,
+      projectDetail: projectDetail ?? null,
+    },
+    update: {
+      projectType,
+      projectDetail: projectDetail ?? null,
+    },
   });
 
   return NextResponse.json({ legacy });
