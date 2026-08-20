@@ -106,6 +106,13 @@ export default async function EntriesPage() {
                         <p className="font-sans text-stone-700 leading-relaxed whitespace-pre-wrap">
                           {entry.content}
                         </p>
+                        {entry.audioUrl && (
+                          <audio
+                            controls
+                            src={entry.audioUrl}
+                            className="mt-3 w-full h-8"
+                          />
+                        )}
                       </div>
                     )
                   )}
