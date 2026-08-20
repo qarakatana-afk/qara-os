@@ -15,10 +15,22 @@ export default async function LegacyPage() {
     update: {},
   });
 
+  // First-time visitors choose what they're making before anything else
+  if (!legacy.projectType) {
+    redirect("/legacy/project");
+  }
+
   // Count the owner's entries for display context
   const entryCount = await prisma.entry.count({
     where: { legacyId: legacy.id, ownerId: userId, role: "owner" },
   });
 
-  return <LegacyHome legacyId={legacy.id} entryCount={entryCount} />;
+  return (
+    <LegacyHome
+      legacyId={legacy.id}
+      entryCount={entryCount}
+      projectType={legacy.projectType}
+      projectDetail={legacy.projectDetail}
+    />
+  );
 }
