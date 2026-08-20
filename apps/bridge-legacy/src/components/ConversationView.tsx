@@ -8,6 +8,7 @@ interface Entry {
   role: "owner" | "ai";
   content: string;
   createdAt: string;
+  audioUrl?: string | null;
 }
 
 interface ConversationSession {
@@ -26,6 +27,8 @@ type ConversationState =
   | "loading"
   | "idle"
   | "awaiting_input"
+  | "recording"
+  | "transcribing"
   | "saving"
   | "generating_ai"
   | "ai_failed"
@@ -57,9 +60,138 @@ export default function ConversationView({ projectType }: ConversationViewProps)
   const [notice, setNotice] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  // Voice recording
+  const [pendingAudioUrl, setPendingAudioUrl] = useState<string | null>(null);
+  const [recordingSeconds, setRecordingSeconds] = useState(0);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const recordingTimerRef = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  );
+  const [micSupported, setMicSupported] = useState(true);
+
+  useEffect(() => {
+    if (
+      typeof navigator === "undefined" ||
+      !navigator.mediaDevices ||
+      typeof MediaRecorder === "undefined"
+    ) {
+      setMicSupported(false);
+    }
+  }, []);
+
   function showNotice(message: string) {
     setNotice(message);
     setTimeout(() => setNotice(null), 4000);
+  }
+
+  async function startRecording() {
+    if (!micSupported) {
+      showNotice("Voice recording isn't supported on this browser — you can type instead.");
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mimeType = MediaRecorder.isTypeSupported("audio/webm")
+        ? "audio/webm"
+        : MediaRecorder.isTypeSupported("audio/mp4")
+          ? "audio/mp4"
+          : "";
+      const recorder = mimeType
+        ? new MediaRecorder(stream, { mimeType })
+        : new MediaRecorder(stream);
+      audioChunksRef.current = [];
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
+      mediaRecorderRef.current = recorder;
+      recorder.start();
+      setRecordingSeconds(0);
+      recordingTimerRef.current = setInterval(() => {
+        setRecordingSeconds((s) => s + 1);
+      }, 1000);
+      setState("recording");
+    } catch {
+      showNotice(
+        "Couldn't access your microphone — check your browser permissions, or type instead."
+      );
+    }
+  }
+
+  function stopRecording(discard: boolean) {
+    if (recordingTimerRef.current) {
+      clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = null;
+    }
+    const recorder = mediaRecorderRef.current;
+    if (!recorder) {
+      setState("awaiting_input");
+      return;
+    }
+
+    if (discard) {
+      recorder.onstop = () => {
+        recorder.stream.getTracks().forEach((t) => t.stop());
+      };
+      recorder.stop();
+      audioChunksRef.current = [];
+      setState("awaiting_input");
+      return;
+    }
+
+    recorder.onstop = async () => {
+      recorder.stream.getTracks().forEach((t) => t.stop());
+      const audioBlob = new Blob(audioChunksRef.current, {
+        type: recorder.mimeType || "audio/webm",
+      });
+      audioChunksRef.current = [];
+      await transcribeAndFill(audioBlob);
+    };
+    recorder.stop();
+  }
+
+  async function transcribeAndFill(audioBlob: Blob) {
+    setState("transcribing");
+    try {
+      const extension = audioBlob.type.includes("mp4") ? "m4a" : "webm";
+      const formData = new FormData();
+      formData.append("audio", audioBlob, `recording.${extension}`);
+
+      const res = await fetch("/api/transcribe", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showNotice("Couldn't process that recording — please try again.");
+        setState("awaiting_input");
+        return;
+      }
+
+      if (data.audioUrl) {
+        setPendingAudioUrl(data.audioUrl);
+      }
+
+      if (data.transcriptionFailed || !data.transcript) {
+        showNotice(
+          data.message ??
+            "Your recording was saved, but couldn't be transcribed — you can type what you said instead."
+        );
+      } else {
+        setInputText(data.transcript);
+      }
+      setState("awaiting_input");
+    } catch {
+      showNotice("Couldn't process that recording — please try again.");
+      setState("awaiting_input");
+    }
   }
 
   // Save a new "ai" role entry directly (used for skip / change subject / the
@@ -193,6 +325,7 @@ export default function ConversationView({ projectType }: ConversationViewProps)
           content: text,
           sessionId: conversation.id,
           role: "owner",
+          audioUrl: pendingAudioUrl ?? undefined,
         }),
       });
       if (!saveRes.ok) throw new Error("Failed to save response");
@@ -201,6 +334,7 @@ export default function ConversationView({ projectType }: ConversationViewProps)
 
       setEntries((prev) => [...prev, savedEntry]);
       setPendingSavedEntryId(savedEntry.id);
+      setPendingAudioUrl(null);
     } catch {
       setState("error");
       setErrorMessage("Your response couldn't be saved. Please try again.");
@@ -346,8 +480,16 @@ export default function ConversationView({ projectType }: ConversationViewProps)
   const isInputDisabled =
     state === "saving" ||
     state === "generating_ai" ||
+    state === "transcribing" ||
+    state === "recording" ||
     state === "ended" ||
     state === "loading";
+
+  function formatSeconds(total: number): string {
+    const m = Math.floor(total / 60);
+    const s = total % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }
 
   return (
     <div className="flex flex-col flex-1 bg-warm-50">
@@ -389,6 +531,13 @@ export default function ConversationView({ projectType }: ConversationViewProps)
                       <p className="font-sans text-stone-700 leading-relaxed">
                         {entry.content}
                       </p>
+                      {entry.audioUrl && (
+                        <audio
+                          controls
+                          src={entry.audioUrl}
+                          className="mt-3 w-full h-8"
+                        />
+                      )}
                     </div>
                   )}
                 </div>
@@ -440,33 +589,77 @@ export default function ConversationView({ projectType }: ConversationViewProps)
       {state !== "ended" && state !== "loading" && state !== "error" && (
         <div className="border-t border-warm-100 bg-warm-50/80 backdrop-blur-sm">
           <div className="max-w-2xl mx-auto px-4 py-4">
-            <div className="flex gap-3 items-end">
-              <textarea
-                className="input-text flex-1 resize-none min-h-[80px] max-h-[200px]"
-                placeholder="Share whatever comes to mind…"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                disabled={isInputDisabled}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    if (inputText.trim()) handleSubmit();
-                  }
-                }}
-                rows={3}
-              />
-              <button
-                onClick={handleSubmit}
-                disabled={isInputDisabled || !inputText.trim()}
-                className="btn-primary self-end"
-              >
-                {state === "saving"
-                  ? "Saving…"
-                  : state === "generating_ai"
-                    ? "…"
-                    : "Share"}
-              </button>
-            </div>
+            {state === "recording" ? (
+              <div className="flex items-center gap-3 bg-white rounded-lg border border-red-200 px-4 py-3">
+                <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                <span className="font-sans text-sm text-stone-600 flex-1">
+                  Recording… {formatSeconds(recordingSeconds)}
+                </span>
+                <button
+                  onClick={() => stopRecording(true)}
+                  className="btn-ghost text-xs"
+                >
+                  Discard
+                </button>
+                <button
+                  onClick={() => stopRecording(false)}
+                  className="btn-primary text-sm"
+                >
+                  Done
+                </button>
+              </div>
+            ) : state === "transcribing" ? (
+              <div className="flex items-center gap-3 bg-white rounded-lg border border-warm-200 px-4 py-3">
+                <span className="font-sans text-sm text-stone-500 animate-pulse">
+                  Transcribing your recording…
+                </span>
+              </div>
+            ) : (
+              <div className="flex gap-3 items-end">
+                <textarea
+                  className="input-text flex-1 resize-none min-h-[80px] max-h-[200px]"
+                  placeholder="Share whatever comes to mind, or tap the mic to talk…"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  disabled={isInputDisabled}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      if (inputText.trim()) handleSubmit();
+                    }
+                  }}
+                  rows={3}
+                />
+                {micSupported && (
+                  <button
+                    onClick={startRecording}
+                    disabled={isInputDisabled}
+                    aria-label="Record a voice memo"
+                    className="btn-ghost self-end px-3 py-3 rounded-full border border-warm-200"
+                    title="Record a voice memo"
+                  >
+                    🎙️
+                  </button>
+                )}
+                <button
+                  onClick={handleSubmit}
+                  disabled={isInputDisabled || !inputText.trim()}
+                  className="btn-primary self-end"
+                >
+                  {state === "saving"
+                    ? "Saving…"
+                    : state === "generating_ai"
+                      ? "…"
+                      : "Share"}
+                </button>
+              </div>
+            )}
+
+            {pendingAudioUrl && state !== "recording" && state !== "transcribing" && (
+              <p className="font-sans text-xs text-stone-400 mt-2">
+                🎙️ Voice recording attached — edit the text above if needed, then Share.
+              </p>
+            )}
 
             <div className="flex gap-2 mt-3 flex-wrap">
               <button
