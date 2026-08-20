@@ -55,6 +55,11 @@ model Entry {
   ownerId      String
   role         String   // "owner" | "ai"
   content      String
+  // If this entry was recorded as voice, the URL of the original audio
+  // file (stored in Vercel Blob). content still holds the transcript, so
+  // every existing feature (AI follow-up, entries page, search) works
+  // unchanged — audioUrl is purely additive for playback.
+  audioUrl     String?
   createdAt    DateTime @default(now())
 
   legacy       Legacy        @relation(fields: [legacyId], references: [id], onDelete: Cascade)
