@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { getOpeningPrompts } from "@/lib/projectTypes";
 
 interface Entry {
   id: string;
@@ -14,6 +15,13 @@ interface ConversationSession {
   status: string;
 }
 
+interface ConversationViewProps {
+  // The owner's chosen project type — determines which set of varied
+  // opening-style questions to draw from for the first question, skip,
+  // and change subject.
+  projectType?: string | null;
+}
+
 type ConversationState =
   | "loading"
   | "idle"
@@ -24,31 +32,16 @@ type ConversationState =
   | "ended"
   | "error";
 
-// A curated set of varied opening-style questions, used whenever we need a
-// fresh starting point (first visit, skip, or change subject) without
-// depending on an AI call. This keeps skip/change-subject fast, free, and
-// reliable even if the AI provider is rate-limited or unavailable.
-const VARIED_PROMPTS = [
-  "What's something you've been thinking about lately — something you know, love, or just can't stop talking about?",
-  "Tell me about someone who shaped who you are.",
-  "What's a skill or piece of knowledge you're proud you picked up along the way?",
-  "Is there a recipe, tradition, or ritual that means something to you?",
-  "What's a moment you'd want someone to know about, even if it seems small?",
-  "What's some advice you wish someone had given you sooner?",
-  "Tell me about a place that means something to you.",
-  "What's something you know to be true that took you a long time to learn?",
-  "What's a story you've told so many times it's become part of who you are?",
-  "Is there something you're proud of that no one ever gave you credit for?",
-];
+export default function ConversationView({ projectType }: ConversationViewProps) {
+  const promptOptions = getOpeningPrompts(projectType);
 
-function getRandomPrompt(exclude?: string): string {
-  const options = exclude
-    ? VARIED_PROMPTS.filter((p) => p !== exclude)
-    : VARIED_PROMPTS;
-  return options[Math.floor(Math.random() * options.length)];
-}
+  function getRandomPrompt(exclude?: string): string {
+    const options = exclude
+      ? promptOptions.filter((p) => p !== exclude)
+      : promptOptions;
+    return options[Math.floor(Math.random() * options.length)];
+  }
 
-export default function ConversationView() {
   const [state, setState] = useState<ConversationState>("loading");
   const [conversation, setConversation] = useState<ConversationSession | null>(
     null
