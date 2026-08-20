@@ -2,14 +2,26 @@
 
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { getPreset } from "@/lib/projectTypes";
 
 interface LegacyHomeProps {
   legacyId: string;
   entryCount: number;
+  projectType?: string | null;
+  projectDetail?: string | null;
 }
 
-export default function LegacyHome({ entryCount }: LegacyHomeProps) {
+export default function LegacyHome({
+  entryCount,
+  projectType,
+  projectDetail,
+}: LegacyHomeProps) {
   const isFirstVisit = entryCount === 0;
+  const preset = getPreset(projectType);
+  const projectLabel =
+    projectType === "custom" && projectDetail
+      ? projectDetail
+      : preset?.label ?? null;
 
   return (
     <div className="min-h-screen bg-warm-50 flex flex-col">
@@ -19,6 +31,19 @@ export default function LegacyHome({ entryCount }: LegacyHomeProps) {
           <h1 className="font-serif text-xl text-stone-700">Bridge Legacy</h1>
           <UserButton afterSignOutUrl="/sign-in" />
         </div>
+        {projectLabel && (
+          <div className="max-w-2xl mx-auto px-4 pb-3 flex items-center justify-center gap-2">
+            <p className="font-sans text-xs text-stone-400">
+              Working on: <span className="text-stone-500">{projectLabel}</span>
+            </p>
+            <Link
+              href="/legacy/project"
+              className="font-sans text-xs text-warm-600 hover:text-warm-700 underline"
+            >
+              Change
+            </Link>
+          </div>
+        )}
       </header>
 
       <main className="flex-1 page-container flex flex-col items-center justify-center text-center">
