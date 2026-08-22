@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
 
   const groqKey = process.env.GROQ_API_KEY;
   if (!groqKey) {
+    console.error("[transcribe] GROQ_API_KEY is not set in this environment.");
     return NextResponse.json(
       { error: "Transcription is not configured yet." },
       { status: 500 }
@@ -33,6 +34,11 @@ export async function POST(req: NextRequest) {
   const audioFile = formData.get("audio");
 
   if (!audioFile || !(audioFile instanceof File)) {
+    console.error(
+      "[transcribe] No valid audio file in form data. Received:",
+      typeof audioFile,
+      audioFile
+    );
     return NextResponse.json(
       { error: "No audio file provided" },
       { status: 400 }
@@ -52,15 +58,28 @@ export async function POST(req: NextRequest) {
   // Step 1: Store the original audio permanently, scoped to this owner.
   let audioUrl: string;
   try {
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+    if (!blobToken) {
+      console.error(
+        "[transcribe] BLOB_READ_WRITE_TOKEN is not set in this environment."
+      );
+    }
     const blob = await put(
       `voice-memos/${userId}/${Date.now()}-${audioFile.name || "recording.webm"}`,
       audioFile,
       { access: "public" }
     );
     audioUrl = blob.url;
-  } catch {
+  } catch (blobError) {
+    console.error("[transcribe] Vercel Blob put() failed:", blobError);
     return NextResponse.json(
-      { error: "Couldn't save the recording. Please try again." },
+      {
+        error: "Couldn't save the recording. Please try again.",
+        debug:
+          process.env.NODE_ENV !== "production"
+            ? String(blobError)
+            : undefined,
+      },
       { status: 500 }
     );
   }
@@ -79,6 +98,12 @@ export async function POST(req: NextRequest) {
     });
 
     if (!groqRes.ok) {
+      const errorBody = await groqRes.text();
+      console.error(
+        "[transcribe] Groq API returned an error:",
+        groqRes.status,
+        errorBody
+      );
       return NextResponse.json({
         audioUrl,
         transcript: null,
