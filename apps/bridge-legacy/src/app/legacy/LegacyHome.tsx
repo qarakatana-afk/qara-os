@@ -115,6 +115,9 @@ export default function LegacyHome({
               <Link href="/legacy/entries" className="btn-ghost text-base">
                 View your entries
               </Link>
+              <Link href="/legacy/create" className="btn-ghost text-base">
+                Create my {(preset?.label ?? "project").toLowerCase()}
+              </Link>
             </div>
           </>
         )}
