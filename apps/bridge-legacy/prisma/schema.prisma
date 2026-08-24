@@ -23,6 +23,11 @@ model Legacy {
   // owner hasn't chosen yet, and the app should prompt them to choose.
   projectType   String?
   projectDetail String?
+  // The actual finished piece (memoir, recipe book, letters, etc.),
+  // generated on demand from the owner's entries. Regenerated whenever the
+  // owner asks — this always holds the most recent version.
+  compiledContent String?
+  compiledAt      DateTime?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
