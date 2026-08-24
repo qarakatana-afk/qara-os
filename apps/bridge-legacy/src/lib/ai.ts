@@ -188,3 +188,51 @@ Return only valid JSON. No other text.`;
     return [];
   }
 }
+
+/**
+ * Turn the owner's raw entries into an actual finished piece (memoir,
+ * recipe book, letters, novel, etc.), formatted appropriately for the
+ * chosen project type. Grounded strictly in what the owner actually said —
+ * never invents people, events, or details.
+ */
+export async function generateCompilation(
+  ownerEntries: string[],
+  compilationInstructions: string,
+  projectDescription?: string
+): Promise<string> {
+  const systemPrompt = `You are helping someone turn their own words into a finished piece of writing${
+    projectDescription ? `: ${projectDescription}` : "."
+  }
+
+${compilationInstructions}
+
+Non-negotiable rules:
+- Use ONLY what the person actually said. Never invent people, events, dates, or details they didn't mention or clearly imply.
+- Preserve their actual voice, phrasing, and word choices as much as possible — this should read like them, not like generic AI writing.
+- Never use memorial, end-of-life, or obituary framing. This is a celebration of a life, not a eulogy.
+- Format the output in Markdown with clear section/chapter headings (##).
+- Write the complete piece now, in full — not an outline or summary.`;
+
+  const rawMaterial = ownerEntries
+    .map((entry, i) => `[Entry ${i + 1}]\n${entry}`)
+    .join("\n\n");
+
+  const completion = await getClient().chat.completions.create({
+    model: MODEL,
+    messages: [
+      { role: "system", content: systemPrompt },
+      {
+        role: "user",
+        content: `Here is everything the person has shared so far. Turn it into the finished piece described above.\n\n${rawMaterial}`,
+      },
+    ],
+    max_tokens: 4096,
+    temperature: 0.6,
+  });
+
+  const content = completion.choices[0]?.message?.content?.trim();
+  if (!content) {
+    throw new Error("AI returned an empty compilation");
+  }
+  return content;
+}
