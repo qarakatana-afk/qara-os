@@ -31,6 +31,14 @@ model Legacy {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  // Payment: the owner pays once, per Legacy, to unlock full viewing and
+  // downloading of their compiled piece. Free up to that point — they can
+  // talk, build entries, and generate a preview without paying anything.
+  isUnlocked         Boolean   @default(false)
+  stripeCustomerId   String?
+  stripeCheckoutId   String?
+  unlockedAt         DateTime?
+
   conversations Conversation[]
   entries       Entry[]
   signals       Signal[]

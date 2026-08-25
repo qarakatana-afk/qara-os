@@ -5,10 +5,18 @@ import { UserButton } from "@clerk/nextjs";
 import { prisma } from "@/lib/db";
 import { getPreset } from "@/lib/projectTypes";
 import CompileView from "@/components/CompileView";
+import UnlockPending from "@/components/UnlockPending";
+import { UNLOCK_PRICE_CENTS } from "@/lib/stripe";
 
-export default async function CreatePage() {
+export default async function CreatePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ unlocked?: string }>;
+}) {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
+
+  const { unlocked } = await searchParams;
 
   const legacy = await prisma.legacy.findUnique({
     where: { ownerId: userId },
@@ -53,12 +61,16 @@ export default async function CreatePage() {
           your own words, shaped into {projectLabel.toLowerCase()}.
         </p>
 
+        {unlocked === "1" && !legacy.isUnlocked && <UnlockPending />}
+
         <CompileView
           legacyId={legacy.id}
           projectLabel={projectLabel}
           hasEnoughContent={ownerEntryCount > 0}
           initialCompiledContent={legacy.compiledContent}
           initialCompiledAt={legacy.compiledAt?.toISOString() ?? null}
+          isUnlocked={legacy.isUnlocked}
+          unlockPriceDisplay={`$${(UNLOCK_PRICE_CENTS / 100).toFixed(2)}`}
         />
       </main>
     </div>

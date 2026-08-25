@@ -8,6 +8,8 @@ interface CompileViewProps {
   hasEnoughContent: boolean;
   initialCompiledContent: string | null;
   initialCompiledAt: string | null;
+  isUnlocked: boolean;
+  unlockPriceDisplay: string;
 }
 
 // A small, dependency-free Markdown-to-JSX renderer. Handles the subset of
@@ -55,16 +57,32 @@ function renderMarkdown(text: string) {
   return blocks;
 }
 
+// How much of the compiled piece a non-paying visitor gets to read before
+// hitting the paywall. Character-based rather than paragraph-based so it
+// works regardless of how the AI structures a given piece.
+const PREVIEW_CHAR_LIMIT = 900;
+
+function truncateForPreview(text: string) {
+  if (text.length <= PREVIEW_CHAR_LIMIT) return text;
+  const cut = text.slice(0, PREVIEW_CHAR_LIMIT);
+  // Avoid chopping mid-word.
+  const lastSpace = cut.lastIndexOf(" ");
+  return cut.slice(0, lastSpace > 0 ? lastSpace : cut.length);
+}
+
 export default function CompileView({
-  legacyId,
+  legacyId: _legacyId,
   projectLabel,
   hasEnoughContent,
   initialCompiledContent,
   initialCompiledAt,
+  isUnlocked,
+  unlockPriceDisplay,
 }: CompileViewProps) {
   const [content, setContent] = useState(initialCompiledContent);
   const [compiledAt, setCompiledAt] = useState(initialCompiledAt);
   const [generating, setGenerating] = useState(false);
+  const [unlocking, setUnlocking] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleGenerate() {
@@ -83,6 +101,24 @@ export default function CompileView({
       setError("Couldn't generate your piece — please try again.");
     } finally {
       setGenerating(false);
+    }
+  }
+
+  async function handleUnlock() {
+    setUnlocking(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok || !data.url) {
+        setError(data.error ?? "Couldn't start checkout — please try again.");
+        setUnlocking(false);
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setError("Couldn't start checkout — please try again.");
+      setUnlocking(false);
     }
   }
 
@@ -110,6 +146,10 @@ export default function CompileView({
     );
   }
 
+  const isPreviewOnly = Boolean(content) && !isUnlocked;
+  const displayedContent =
+    content && isPreviewOnly ? truncateForPreview(content) : content;
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row gap-3 mb-8 items-start sm:items-center justify-between">
@@ -121,7 +161,7 @@ export default function CompileView({
           )}
         </div>
         <div className="flex gap-3">
-          {content && (
+          {content && isUnlocked && (
             <button onClick={handleDownload} className="btn-ghost">
               Download
             </button>
@@ -152,7 +192,28 @@ export default function CompileView({
         </div>
       )}
 
-      {content && <div>{renderMarkdown(content)}</div>}
+      {displayedContent && <div>{renderMarkdown(displayedContent)}</div>}
+
+      {isPreviewOnly && (
+        <div className="relative -mt-24 pt-24 bg-gradient-to-b from-transparent via-warm-50/90 to-warm-50">
+          <div className="card text-center py-10">
+            <p className="section-title mb-2">
+              Unlock your full {projectLabel.toLowerCase()}
+            </p>
+            <p className="body-text mb-6">
+              That's just a taste. Pay once to read the rest and download it,
+              yours to keep, no subscription.
+            </p>
+            <button
+              onClick={handleUnlock}
+              disabled={unlocking}
+              className="btn-primary"
+            >
+              {unlocking ? "Redirecting…" : `Unlock for ${unlockPriceDisplay}`}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
