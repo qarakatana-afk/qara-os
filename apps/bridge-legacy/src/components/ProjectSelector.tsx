@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import { PROJECT_PRESETS } from "@/lib/projectTypes";
 
 interface ProjectSelectorProps {
+  legacyId: string;
   currentProjectType?: string | null;
   currentProjectDetail?: string | null;
 }
 
 export default function ProjectSelector({
+  legacyId,
   currentProjectType,
   currentProjectDetail,
 }: ProjectSelectorProps) {
@@ -35,12 +37,13 @@ export default function ProjectSelector({
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          legacyId,
           projectType: selected,
           projectDetail: isCustom ? customText.trim() : null,
         }),
       });
       if (!res.ok) throw new Error();
-      router.push("/legacy");
+      router.push(`/legacy/${legacyId}`);
       router.refresh();
     } catch {
       setError("Couldn't save your choice — please try again.");

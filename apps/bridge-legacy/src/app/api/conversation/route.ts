@@ -1,19 +1,27 @@
-// GET /api/conversation — get or create the active conversation session for the owner's Legacy
-// POST /api/conversation — update session status (pause | end | resume)
+// GET /api/conversation?legacyId=... — get or create the active conversation
+//   session for a specific Legacy
+// POST /api/conversation — update session status (pause | end | resume),
+//   or start a fresh one with { action: "new", legacyId }
 
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Look up the owner's Legacy — must exist
-  const legacy = await prisma.legacy.findUnique({
-    where: { ownerId: userId },
+  const { searchParams } = new URL(req.url);
+  const legacyId = searchParams.get("legacyId");
+  if (!legacyId) {
+    return NextResponse.json({ error: "legacyId is required" }, { status: 400 });
+  }
+
+  // Look up the specific Legacy — must exist and belong to this owner
+  const legacy = await prisma.legacy.findFirst({
+    where: { id: legacyId, ownerId: userId },
   });
   if (!legacy) {
     return NextResponse.json({ error: "Legacy not found" }, { status: 404 });
@@ -55,15 +63,24 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { conversationId, action } = body as {
-    conversationId: string;
+  const { conversationId, action, legacyId } = body as {
+    conversationId?: string;
     action: "pause" | "end" | "resume" | "new";
+    legacyId?: string;
   };
 
   if (action === "new") {
-    // Start a fresh conversation — always scoped to the authenticated owner
-    const legacy = await prisma.legacy.findUnique({
-      where: { ownerId: userId },
+    if (!legacyId) {
+      return NextResponse.json(
+        { error: "legacyId is required" },
+        { status: 400 }
+      );
+    }
+
+    // Start a fresh conversation — always scoped to a specific,
+    // owner-verified Legacy
+    const legacy = await prisma.legacy.findFirst({
+      where: { id: legacyId, ownerId: userId },
     });
     if (!legacy) {
       return NextResponse.json({ error: "Legacy not found" }, { status: 404 });

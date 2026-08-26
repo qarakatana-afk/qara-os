@@ -14,8 +14,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const legacy = await prisma.legacy.findUnique({
-    where: { ownerId: userId },
+  const body = await req.json().catch(() => ({}));
+  const { legacyId } = body as { legacyId?: string };
+
+  if (!legacyId) {
+    return NextResponse.json(
+      { error: "legacyId is required" },
+      { status: 400 }
+    );
+  }
+
+  const legacy = await prisma.legacy.findFirst({
+    where: { id: legacyId, ownerId: userId },
   });
 
   if (!legacy) {
@@ -58,8 +68,8 @@ export async function POST(req: NextRequest) {
         legacyId: legacy.id,
         ownerId: userId,
       },
-      success_url: `${origin}/legacy/create?unlocked=1`,
-      cancel_url: `${origin}/legacy/create?unlocked=0`,
+      success_url: `${origin}/legacy/${legacy.id}/create?unlocked=1`,
+      cancel_url: `${origin}/legacy/${legacy.id}/create?unlocked=0`,
     });
 
     return NextResponse.json({ url: session.url });

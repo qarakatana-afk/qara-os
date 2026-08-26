@@ -4,19 +4,29 @@
 // doesn't need regenerating unless the owner explicitly asks.
 
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { generateCompilation } from "@/lib/ai";
 import { getPreset, getCompilationInstructions } from "@/lib/projectTypes";
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const legacy = await prisma.legacy.findUnique({
-    where: { ownerId: userId },
+  const body = await req.json().catch(() => ({}));
+  const { legacyId } = body as { legacyId?: string };
+
+  if (!legacyId) {
+    return NextResponse.json(
+      { error: "legacyId is required" },
+      { status: 400 }
+    );
+  }
+
+  const legacy = await prisma.legacy.findFirst({
+    where: { id: legacyId, ownerId: userId },
   });
 
   if (!legacy) {

@@ -71,7 +71,7 @@ function truncateForPreview(text: string) {
 }
 
 export default function CompileView({
-  legacyId: _legacyId,
+  legacyId,
   projectLabel,
   hasEnoughContent,
   initialCompiledContent,
@@ -89,7 +89,11 @@ export default function CompileView({
     setGenerating(true);
     setError(null);
     try {
-      const res = await fetch("/api/legacy/compile", { method: "POST" });
+      const res = await fetch("/api/legacy/compile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ legacyId }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? "Couldn't generate your piece — please try again.");
@@ -108,7 +112,11 @@ export default function CompileView({
     setUnlocking(true);
     setError(null);
     try {
-      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ legacyId }),
+      });
       const data = await res.json();
       if (!res.ok || !data.url) {
         setError(data.error ?? "Couldn't start checkout — please try again.");
