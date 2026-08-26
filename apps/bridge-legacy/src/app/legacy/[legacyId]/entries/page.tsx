@@ -1,18 +1,23 @@
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { prisma } from "@/lib/db";
 
-export default async function EntriesPage() {
+export default async function EntriesPage({
+  params,
+}: {
+  params: Promise<{ legacyId: string }>;
+}) {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
-  const legacy = await prisma.legacy.findUnique({
-    where: { ownerId: userId },
-  });
+  const { legacyId } = await params;
 
-  if (!legacy) redirect("/legacy");
+  const legacy = await prisma.legacy.findFirst({
+    where: { id: legacyId, ownerId: userId },
+  });
+  if (!legacy) notFound();
 
   // Fetch every conversation session and every entry, then group entries
   // by session so they read as a series of conversations rather than one
@@ -56,7 +61,7 @@ export default async function EntriesPage() {
       <header className="border-b border-warm-100 bg-warm-50/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link
-            href="/legacy"
+            href={`/legacy/${legacyId}`}
             className="font-serif text-stone-500 hover:text-stone-700 transition-colors text-sm"
           >
             ← Your Legacy
@@ -78,7 +83,7 @@ export default async function EntriesPage() {
             <p className="body-text">
               Once you share something, it'll show up here.
             </p>
-            <Link href="/legacy/conversation" className="btn-primary mt-4 inline-block">
+            <Link href={`/legacy/${legacyId}/conversation`} className="btn-primary mt-4 inline-block">
               Begin your Legacy
             </Link>
           </div>

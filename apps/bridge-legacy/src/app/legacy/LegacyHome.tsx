@@ -12,6 +12,7 @@ interface LegacyHomeProps {
 }
 
 export default function LegacyHome({
+  legacyId,
   entryCount,
   projectType,
   projectDetail,
@@ -28,7 +29,9 @@ export default function LegacyHome({
       {/* Header */}
       <header className="border-b border-warm-100 bg-warm-50/80 backdrop-blur-sm">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="font-serif text-xl text-stone-700">Bridge Legacy</h1>
+          <Link href="/legacy" className="font-serif text-xl text-stone-700">
+            Bridge Legacy
+          </Link>
           <UserButton afterSignOutUrl="/sign-in" />
         </div>
         {projectLabel && (
@@ -37,7 +40,7 @@ export default function LegacyHome({
               Working on: <span className="text-stone-500">{projectLabel}</span>
             </p>
             <Link
-              href="/legacy/project"
+              href={`/legacy/${legacyId}/project`}
               className="font-sans text-xs text-warm-600 hover:text-warm-700 underline"
             >
               Change
@@ -84,7 +87,10 @@ export default function LegacyHome({
               ))}
             </div>
 
-            <Link href="/legacy/conversation" className="btn-primary text-base">
+            <Link
+              href={`/legacy/${legacyId}/conversation`}
+              className="btn-primary text-base"
+            >
               Begin your Legacy
             </Link>
           </>
@@ -97,7 +103,7 @@ export default function LegacyHome({
               <p className="body-text max-w-sm mx-auto">
                 Your Legacy has{" "}
                 <Link
-                  href="/legacy/entries"
+                  href={`/legacy/${legacyId}/entries`}
                   className="text-stone-700 font-medium underline decoration-warm-300 hover:decoration-warm-500"
                 >
                   {entryCount} {entryCount === 1 ? "entry" : "entries"}
@@ -109,13 +115,22 @@ export default function LegacyHome({
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/legacy/conversation" className="btn-primary text-base">
+              <Link
+                href={`/legacy/${legacyId}/conversation`}
+                className="btn-primary text-base"
+              >
                 Continue your Legacy
               </Link>
-              <Link href="/legacy/entries" className="btn-ghost text-base">
+              <Link
+                href={`/legacy/${legacyId}/entries`}
+                className="btn-ghost text-base"
+              >
                 View your entries
               </Link>
-              <Link href="/legacy/create" className="btn-ghost text-base">
+              <Link
+                href={`/legacy/${legacyId}/create`}
+                className="btn-ghost text-base"
+              >
                 Create my {(preset?.label ?? "project").toLowerCase()}
               </Link>
             </div>

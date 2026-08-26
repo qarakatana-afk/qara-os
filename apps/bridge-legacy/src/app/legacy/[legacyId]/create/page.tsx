@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { prisma } from "@/lib/db";
@@ -9,21 +9,24 @@ import UnlockPending from "@/components/UnlockPending";
 import { UNLOCK_PRICE_CENTS } from "@/lib/stripe";
 
 export default async function CreatePage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ legacyId: string }>;
   searchParams: Promise<{ unlocked?: string }>;
 }) {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
+  const { legacyId } = await params;
   const { unlocked } = await searchParams;
 
-  const legacy = await prisma.legacy.findUnique({
-    where: { ownerId: userId },
+  const legacy = await prisma.legacy.findFirst({
+    where: { id: legacyId, ownerId: userId },
   });
 
-  if (!legacy) redirect("/legacy");
-  if (!legacy.projectType) redirect("/legacy/project");
+  if (!legacy) notFound();
+  if (!legacy.projectType) redirect(`/legacy/${legacyId}/project`);
 
   const ownerEntryCount = await prisma.entry.count({
     where: {
@@ -45,7 +48,7 @@ export default async function CreatePage({
       <header className="border-b border-warm-100 bg-warm-50/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link
-            href="/legacy"
+            href={`/legacy/${legacyId}`}
             className="font-serif text-stone-500 hover:text-stone-700 transition-colors text-sm"
           >
             ← Your Legacy

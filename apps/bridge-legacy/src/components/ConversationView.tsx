@@ -17,6 +17,8 @@ interface ConversationSession {
 }
 
 interface ConversationViewProps {
+  // Which project this conversation belongs to.
+  legacyId: string;
   // The owner's chosen project type — determines which set of varied
   // opening-style questions to draw from for the first question, skip,
   // and change subject.
@@ -35,7 +37,7 @@ type ConversationState =
   | "ended"
   | "error";
 
-export default function ConversationView({ projectType }: ConversationViewProps) {
+export default function ConversationView({ legacyId, projectType }: ConversationViewProps) {
   const promptOptions = getOpeningPrompts(projectType);
 
   function getRandomPrompt(exclude?: string): string {
@@ -222,7 +224,7 @@ export default function ConversationView({ projectType }: ConversationViewProps)
   useEffect(() => {
     async function init() {
       try {
-        const convRes = await fetch("/api/conversation");
+        const convRes = await fetch(`/api/conversation?legacyId=${legacyId}`);
         if (!convRes.ok) throw new Error("Failed to load conversation");
         const { conversation: conv } = await convRes.json();
         setConversation(conv);
@@ -303,7 +305,7 @@ export default function ConversationView({ projectType }: ConversationViewProps)
       }
     }
     init();
-  }, []);
+  }, [legacyId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -438,7 +440,7 @@ export default function ConversationView({ projectType }: ConversationViewProps)
       const res = await fetch("/api/conversation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "new" }),
+        body: JSON.stringify({ action: "new", legacyId }),
       });
       if (!res.ok) throw new Error();
       const { conversation: newConv } = await res.json();

@@ -11,11 +11,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// A Legacy belongs to exactly one authenticated owner.
-// Every owner can have exactly one Legacy (enforced by @unique on ownerId).
+// A Legacy belongs to exactly one authenticated owner, but an owner can
+// have any number of Legacies (e.g. a memoir AND a recipe book). ownerId
+// is intentionally NOT unique — every query that scopes by owner must
+// also scope by the specific Legacy id.
 model Legacy {
   id            String   @id @default(cuid())
-  ownerId       String   @unique
+  ownerId       String
   // What the owner is actually making (memoir, recipe book, letters, etc.)
   // projectType holds a preset id, or "custom". projectDetail holds the
   // owner's own free-text description when projectType is "custom", or a
@@ -42,6 +44,8 @@ model Legacy {
   conversations Conversation[]
   entries       Entry[]
   signals       Signal[]
+
+  @@index([ownerId])
 }
 
 // A Conversation is a session of guided exploration.
